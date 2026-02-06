@@ -15,134 +15,153 @@ const colors = {
   employment: '#f59e0b',
 }
 
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return `${r},${g},${b}`
+}
+
 const styles = {
   card: {
-    background: '#1e1e1e',
+    background: 'rgba(255,255,255,0.03)',
+    backdropFilter: 'blur(20px)',
     border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: 16,
-    padding: 24,
-    marginBottom: 16,
+    borderRadius: 24,
+    padding: 40,
+    marginBottom: 24,
   },
   title: {
     fontSize: 18,
     fontWeight: 700,
-    color: '#e2e8f0',
+    color: '#fff',
+    marginBottom: 24,
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+  },
+  subCard: (color) => ({
+    background: `rgba(${hexToRgb(color)},0.05)`,
+    border: `1px solid rgba(${hexToRgb(color)},0.15)`,
+    borderRadius: 24,
+    padding: 32,
+    marginBottom: 16,
+  }),
+  subTitle: (color) => ({
+    fontSize: 16,
+    fontWeight: 700,
+    color,
     marginBottom: 16,
     display: 'flex',
     alignItems: 'center',
     gap: 8,
-  },
-  subCard: (color) => ({
-    background: `rgba(${hexToRgb(color)},0.08)`,
-    border: `1px solid rgba(${hexToRgb(color)},0.2)`,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 12,
-  }),
-  subTitle: (color) => ({
-    fontSize: 14,
-    fontWeight: 600,
-    color,
-    marginBottom: 10,
-    display: 'flex',
-    alignItems: 'center',
-    gap: 6,
   }),
   tabs: {
     display: 'flex',
-    gap: 6,
-    marginBottom: 12,
+    gap: 8,
+    marginBottom: 16,
   },
   tab: (active, color) => ({
     flex: 1,
-    padding: '10px 8px',
-    background: active ? `rgba(${hexToRgb(color)},0.15)` : '#2a2a2a',
-    border: active ? `1px solid rgba(${hexToRgb(color)},0.3)` : '1px solid #3a3a3a',
-    borderRadius: 10,
-    color: active ? color : '#9ca3af',
-    fontSize: 12,
+    padding: '12px 10px',
+    background: active
+      ? `linear-gradient(135deg, ${color} 0%, ${color}dd 100%)`
+      : 'rgba(255,255,255,0.05)',
+    border: active
+      ? `2px solid rgba(${hexToRgb(color)},0.5)`
+      : '2px solid rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    color: active ? '#fff' : 'rgba(255,255,255,0.6)',
+    fontSize: 13,
     cursor: 'pointer',
-    fontWeight: active ? 600 : 400,
-    transition: 'all 0.2s',
+    fontWeight: 600,
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
     textAlign: 'center',
+    transform: active ? 'scale(1)' : 'scale(0.98)',
+    boxShadow: active ? `0 6px 16px rgba(${hexToRgb(color)},0.3)` : 'none',
   }),
   label: {
-    fontSize: 12,
-    color: '#9ca3af',
-    marginBottom: 4,
+    fontSize: 14,
+    fontWeight: 600,
+    color: 'rgba(255,255,255,0.7)',
+    marginBottom: 12,
     display: 'block',
+    letterSpacing: 0.3,
   },
   input: {
     width: '100%',
-    padding: '8px 10px',
-    background: '#2a2a2a',
-    border: '1px solid #3a3a3a',
-    borderRadius: 6,
-    color: '#e2e8f0',
-    fontSize: 14,
+    padding: '12px 16px',
+    background: 'rgba(0,0,0,0.3)',
+    border: '2px solid rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 600,
     outline: 'none',
     textAlign: 'right',
+    transition: 'all 0.3s ease',
   },
   select: {
     width: '100%',
-    padding: '12px 36px 12px 14px',
-    background: '#2a2a2a',
-    border: '1px solid #3a3a3a',
-    borderRadius: 10,
-    color: '#e2e8f0',
-    fontSize: 13,
+    padding: '16px 20px',
+    background: 'rgba(0,0,0,0.3)',
+    border: '2px solid rgba(255,255,255,0.1)',
+    borderRadius: 16,
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 600,
     outline: 'none',
     appearance: 'none',
     cursor: 'pointer',
-    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E")`,
+    transition: 'all 0.3s ease',
+    backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")`,
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'right 12px center',
-    backgroundSize: 14,
+    backgroundPosition: 'right 20px center',
   },
   checkbox: {
     display: 'flex',
     alignItems: 'center',
-    gap: 8,
-    fontSize: 13,
-    color: '#cbd5e1',
+    gap: 10,
+    fontSize: 14,
+    fontWeight: 500,
+    color: 'rgba(255,255,255,0.7)',
     cursor: 'pointer',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   checkboxInput: {
-    width: 16,
-    height: 16,
+    width: 18,
+    height: 18,
     accentColor: '#10b981',
     cursor: 'pointer',
   },
   categoryGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-    gap: 6,
+    gap: 8,
   },
-  categoryBtn: (active) => ({
-    padding: '12px 6px',
-    background: active ? '#f59e0b' : '#2a2a2a',
-    border: active ? '1px solid #f59e0b' : '1px solid #3a3a3a',
-    borderRadius: 10,
-    color: active ? '#ffffff' : '#9ca3af',
-    fontSize: 12,
+  categoryBtn: (active, color) => ({
+    padding: '14px 8px',
+    background: active
+      ? `linear-gradient(135deg, ${color} 0%, ${color}dd 100%)`
+      : 'rgba(255,255,255,0.05)',
+    border: active
+      ? `2px solid rgba(${hexToRgb(color)},0.5)`
+      : '2px solid rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    color: active ? '#fff' : 'rgba(255,255,255,0.6)',
+    fontSize: 13,
     cursor: 'pointer',
-    fontWeight: active ? 600 : 400,
-    transition: 'all 0.2s',
+    fontWeight: 600,
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
     textAlign: 'center',
+    transform: active ? 'scale(1)' : 'scale(0.98)',
+    boxShadow: active ? `0 6px 16px rgba(${hexToRgb(color)},0.3)` : 'none',
   }),
   rateInfo: {
-    fontSize: 11,
-    color: '#6b7280',
-    marginTop: 6,
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.4)',
+    marginTop: 10,
   },
-}
-
-function hexToRgb(hex) {
-  const r = parseInt(hex.slice(1, 3), 16)
-  const g = parseInt(hex.slice(3, 5), 16)
-  const b = parseInt(hex.slice(5, 7), 16)
-  return `${r},${g},${b}`
 }
 
 function NumericInput({ value, onChange, placeholder }) {
@@ -237,9 +256,9 @@ function HealthCard({
             value={standardGrade ?? ''}
             onChange={(e) => onStandardGradeChange(e.target.value === '' ? null : Number(e.target.value))}
           >
-            <option value="">自動判定</option>
+            <option value="" style={{ background: '#1a1a1a' }}>自動判定</option>
             {HEALTH_STANDARD_TABLE.map(([grade, amount], i) => (
-              <option key={grade} value={i}>
+              <option key={grade} value={i} style={{ background: '#1a1a1a' }}>
                 {grade}等級 - ¥{formatNumber(amount)}
               </option>
             ))}
@@ -290,9 +309,9 @@ function PensionCard({
             value={standardGrade ?? ''}
             onChange={(e) => onStandardGradeChange(e.target.value === '' ? null : Number(e.target.value))}
           >
-            <option value="">自動判定</option>
+            <option value="" style={{ background: '#1a1a1a' }}>自動判定</option>
             {PENSION_STANDARD_TABLE.map(([grade, amount], i) => (
-              <option key={grade} value={i}>
+              <option key={grade} value={i} style={{ background: '#1a1a1a' }}>
                 {grade}等級 - ¥{formatNumber(amount)}
               </option>
             ))}
@@ -404,12 +423,12 @@ function EmploymentCard({
             {EMPLOYMENT_CATEGORIES.filter((c) => c.id !== 'none').map((cat) => (
               <button
                 key={cat.id}
-                style={styles.categoryBtn(categoryId === cat.id)}
+                style={styles.categoryBtn(categoryId === cat.id, colors.employment)}
                 onClick={() => onCategoryChange(cat.id)}
               >
                 {cat.label}
                 <br />
-                <span style={{ fontSize: 10 }}>{cat.rate}%</span>
+                <span style={{ fontSize: 11, opacity: 0.8 }}>{cat.rate}%</span>
               </button>
             ))}
           </div>

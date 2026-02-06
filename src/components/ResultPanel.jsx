@@ -1,125 +1,140 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronDown, ChevronUp, Info } from 'lucide-react'
 import { formatCurrency } from '../utils/format'
 
-const teal = '#2dd4bf'
+const teal = '#4ecdc4'
+const mono = '"Outfit", monospace'
 
 const styles = {
   panel: (isDesktop) => ({
-    background: '#1e1e1e',
-    border: '1px solid #2a2a2a',
-    borderRadius: 16,
-    padding: 24,
+    background: 'linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(78, 205, 196, 0.1) 100%)',
+    backdropFilter: 'blur(20px)',
+    border: '1px solid rgba(255,255,255,0.1)',
+    borderRadius: 24,
+    padding: 40,
     position: isDesktop ? 'sticky' : 'relative',
     top: isDesktop ? 24 : 'auto',
+    boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
   }),
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 700,
-    color: '#e2e8f0',
-    marginBottom: 20,
+    color: '#fff',
+    marginBottom: 24,
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+  },
+  heroSection: {
+    textAlign: 'center',
+    padding: 32,
+    marginBottom: 24,
+    background: 'rgba(0,0,0,0.3)',
+    borderRadius: 20,
+    border: '2px solid rgba(78, 205, 196, 0.3)',
+  },
+  heroLabel: {
+    fontSize: 14,
+    fontWeight: 600,
+    color: 'rgba(255,255,255,0.5)',
+    marginBottom: 12,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+  },
+  heroAmount: {
+    fontSize: 'clamp(36px, 5vw, 52px)',
+    fontWeight: 800,
+    color: teal,
+    letterSpacing: '-0.02em',
+    fontFamily: mono,
+  },
+  badge: (rate) => ({
+    display: 'inline-block',
+    marginTop: 12,
+    padding: '6px 16px',
+    borderRadius: 100,
+    fontSize: 13,
+    fontWeight: 600,
+    background: rate > 30
+      ? 'rgba(255, 107, 107, 0.15)'
+      : rate > 20
+        ? 'rgba(245,158,11,0.15)'
+        : 'rgba(34,197,94,0.15)',
+    color: rate > 30 ? '#ff6b6b' : rate > 20 ? '#fbbf24' : '#34d399',
+    border: `1px solid ${rate > 30 ? 'rgba(255, 107, 107, 0.3)' : rate > 20 ? 'rgba(245,158,11,0.3)' : 'rgba(34,197,94,0.3)'}`,
+  }),
+  summaryRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '12px 0',
+    fontSize: 14,
+  },
+  summaryLabel: {
+    color: 'rgba(255,255,255,0.6)',
+    fontWeight: 500,
+  },
+  summaryValue: {
+    fontWeight: 600,
+    color: '#fff',
+    fontFamily: mono,
+  },
+  divider: {
+    height: 1,
+    background: 'rgba(255,255,255,0.1)',
+    margin: '4px 0',
+  },
+  expandBtn: {
+    width: '100%',
+    padding: 14,
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 600,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    marginTop: 16,
+    transition: 'all 0.3s ease',
+  },
+  detailSection: {
+    marginTop: 16,
+    background: 'rgba(0,0,0,0.2)',
+    borderRadius: 16,
+    padding: 24,
+    animation: 'slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  },
+  detailTitle: {
+    fontSize: 13,
+    fontWeight: 700,
+    color: 'rgba(255,255,255,0.9)',
+    marginBottom: 12,
+    marginTop: 16,
     display: 'flex',
     alignItems: 'center',
     gap: 8,
   },
-  heroSection: {
-    textAlign: 'center',
-    padding: '20px 0',
-    marginBottom: 16,
-    background: 'rgba(45,212,191,0.08)',
-    borderRadius: 12,
-    border: '1px solid rgba(45,212,191,0.2)',
-  },
-  heroLabel: {
-    fontSize: 13,
-    color: '#9ca3af',
-    marginBottom: 4,
-  },
-  heroAmount: {
-    fontSize: 36,
-    fontWeight: 800,
-    color: teal,
-    letterSpacing: -1,
-  },
-  badge: (rate) => ({
-    display: 'inline-block',
-    marginTop: 8,
-    padding: '4px 12px',
-    borderRadius: 20,
-    fontSize: 12,
-    fontWeight: 600,
-    background: rate > 30
-      ? 'rgba(239,68,68,0.15)'
-      : rate > 20
-        ? 'rgba(245,158,11,0.15)'
-        : 'rgba(34,197,94,0.15)',
-    color: rate > 30 ? '#f87171' : rate > 20 ? '#fbbf24' : '#34d399',
-    border: `1px solid ${rate > 30 ? 'rgba(239,68,68,0.3)' : rate > 20 ? 'rgba(245,158,11,0.3)' : 'rgba(34,197,94,0.3)'}`,
-  }),
-  summaryRow: {
+  detailRow: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '8px 0',
     fontSize: 14,
   },
-  summaryLabel: {
-    color: '#9ca3af',
-  },
-  summaryValue: {
-    fontWeight: 600,
-    color: '#e2e8f0',
-    fontVariantNumeric: 'tabular-nums',
-  },
-  divider: {
-    height: 1,
-    background: '#2a2a2a',
-    margin: '8px 0',
-  },
-  expandBtn: {
-    width: '100%',
-    padding: '10px 0',
-    background: '#252525',
-    border: '1px solid #3a3a3a',
-    borderRadius: 8,
-    color: '#9ca3af',
-    fontSize: 13,
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    marginTop: 12,
-    transition: 'all 0.2s',
-  },
-  detailSection: {
-    marginTop: 12,
-  },
-  detailTitle: {
-    fontSize: 12,
-    fontWeight: 600,
-    color: '#6b7280',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-    marginBottom: 8,
-    marginTop: 12,
-  },
-  detailRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '4px 0',
-    fontSize: 13,
-  },
   detailLabel: {
-    color: '#6b7280',
+    color: 'rgba(255,255,255,0.6)',
     display: 'flex',
     alignItems: 'center',
     gap: 6,
   },
   detailValue: {
-    color: '#d1d5db',
-    fontVariantNumeric: 'tabular-nums',
+    color: '#fff',
+    fontFamily: mono,
+    fontWeight: 600,
   },
   dot: (color) => ({
     width: 8,
@@ -129,18 +144,19 @@ const styles = {
     display: 'inline-block',
   }),
   negativeValue: {
-    color: '#f87171',
-    fontVariantNumeric: 'tabular-nums',
+    color: '#ff6b6b',
+    fontFamily: mono,
+    fontWeight: 600,
   },
   bonusBadge: {
     display: 'inline-block',
-    padding: '2px 8px',
-    borderRadius: 10,
-    fontSize: 11,
+    padding: '4px 12px',
+    borderRadius: 100,
+    fontSize: 12,
     fontWeight: 600,
-    background: 'rgba(251,146,60,0.15)',
-    color: '#fb923c',
-    border: '1px solid rgba(251,146,60,0.3)',
+    background: 'rgba(78, 205, 196, 0.15)',
+    color: teal,
+    border: '1px solid rgba(78, 205, 196, 0.3)',
     marginLeft: 8,
   },
 }
@@ -157,8 +173,8 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
         </div>
         <div style={{
           textAlign: 'center',
-          padding: '32px 0',
-          color: '#6b7280',
+          padding: '40px 0',
+          color: 'rgba(255,255,255,0.4)',
           fontSize: 14,
         }}>
           基本給を入力すると計算結果が表示されます
@@ -210,20 +226,20 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
       <div style={styles.divider} />
       <div style={styles.summaryRow}>
         <span style={styles.summaryLabel}>社会保険料</span>
-        <span style={{ ...styles.summaryValue, color: '#f87171' }}>
+        <span style={{ ...styles.summaryValue, color: '#ff6b6b' }}>
           -{formatCurrency(socialInsuranceTotal)}
         </span>
       </div>
       <div style={styles.summaryRow}>
         <span style={styles.summaryLabel}>所得税</span>
-        <span style={{ ...styles.summaryValue, color: '#f87171' }}>
+        <span style={{ ...styles.summaryValue, color: '#ff6b6b' }}>
           -{formatCurrency(withholdingTax)}
         </span>
       </div>
       {residentTax > 0 && (
         <div style={styles.summaryRow}>
           <span style={styles.summaryLabel}>住民税</span>
-          <span style={{ ...styles.summaryValue, color: '#f87171' }}>
+          <span style={{ ...styles.summaryValue, color: '#ff6b6b' }}>
             -{formatCurrency(residentTax)}
           </span>
         </div>
@@ -232,12 +248,12 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
         <div style={styles.summaryRow}>
           <span style={styles.summaryLabel}>住民税</span>
           <span style={{
-            fontSize: 11,
-            color: '#6b7280',
+            fontSize: 12,
+            color: 'rgba(255,255,255,0.4)',
             fontStyle: 'italic',
-            padding: '2px 8px',
-            background: '#252525',
-            borderRadius: 4,
+            padding: '2px 10px',
+            background: 'rgba(255,255,255,0.05)',
+            borderRadius: 6,
           }}>
             除外中
           </span>
@@ -246,7 +262,7 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
       {totalOtherDeductions > 0 && (
         <div style={styles.summaryRow}>
           <span style={styles.summaryLabel}>その他控除</span>
-          <span style={{ ...styles.summaryValue, color: '#f87171' }}>
+          <span style={{ ...styles.summaryValue, color: '#ff6b6b' }}>
             -{formatCurrency(totalOtherDeductions)}
           </span>
         </div>
@@ -256,7 +272,7 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
         <span style={{ ...styles.summaryLabel, fontWeight: 700, color: teal }}>
           差引手取り額
         </span>
-        <span style={{ ...styles.summaryValue, color: teal, fontSize: 18 }}>
+        <span style={{ ...styles.summaryValue, color: teal, fontSize: 20, fontWeight: 800 }}>
           {formatCurrency(takeHome)}
         </span>
       </div>
@@ -265,13 +281,14 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
         style={styles.expandBtn}
         onClick={() => setExpanded((prev) => !prev)}
       >
-        {expanded ? '詳細を閉じる' : '詳細を表示'}
+        <Info size={16} />
+        {expanded ? '詳細を非表示' : '内訳を表示'}
         {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
 
       {expanded && (
         <div style={styles.detailSection}>
-          <div style={styles.detailTitle}>支給内訳</div>
+          <div style={{ ...styles.detailTitle, marginTop: 0 }}>支給内訳</div>
           <div style={styles.detailRow}>
             <span style={styles.detailLabel}>基本給</span>
             <span style={styles.detailValue}>{formatCurrency(baseSalary)}</span>
@@ -279,7 +296,7 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
           {totalAllowances > 0 && (
             <div style={styles.detailRow}>
               <span style={styles.detailLabel}>手当合計</span>
-              <span style={styles.detailValue}>{formatCurrency(totalAllowances)}</span>
+              <span style={{ ...styles.detailValue, color: teal }}>{formatCurrency(totalAllowances)}</span>
             </div>
           )}
           {bonusAmount > 0 && (
@@ -293,13 +310,19 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
               <span style={{ ...styles.detailLabel, color: '#22c55e' }}>
                 うち非課税手当
               </span>
-              <span style={{ color: '#22c55e', fontVariantNumeric: 'tabular-nums', fontSize: 13 }}>
+              <span style={{ color: '#22c55e', fontFamily: mono, fontWeight: 600, fontSize: 14 }}>
                 {formatCurrency(taxExemptAllowances)}
               </span>
             </div>
           )}
 
-          <div style={styles.detailTitle}>社会保険料内訳</div>
+          <div style={{
+            height: 1,
+            background: 'rgba(255,255,255,0.1)',
+            margin: '12px 0',
+          }} />
+
+          <div style={styles.detailTitle}>社会保険料</div>
           <div style={styles.detailRow}>
             <span style={styles.detailLabel}>
               <span style={styles.dot('#22c55e')} /> 健康保険
@@ -329,7 +352,13 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
             </div>
           )}
 
-          <div style={styles.detailTitle}>税金内訳</div>
+          <div style={{
+            height: 1,
+            background: 'rgba(255,255,255,0.1)',
+            margin: '12px 0',
+          }} />
+
+          <div style={styles.detailTitle}>税金</div>
           <div style={styles.detailRow}>
             <span style={styles.detailLabel}>
               <span style={styles.dot('#ef4444')} /> 所得税
@@ -346,6 +375,11 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
           )}
           {totalOtherDeductions > 0 && (
             <>
+              <div style={{
+                height: 1,
+                background: 'rgba(255,255,255,0.1)',
+                margin: '12px 0',
+              }} />
               <div style={styles.detailTitle}>その他控除</div>
               <div style={styles.detailRow}>
                 <span style={styles.detailLabel}>控除合計</span>
@@ -356,10 +390,24 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
             </>
           )}
 
-          <div style={{ ...styles.divider, marginTop: 12 }} />
-          <div style={{ ...styles.detailRow, marginTop: 8 }}>
-            <span style={{ fontSize: 12, color: '#6b7280' }}>控除合計</span>
-            <span style={{ ...styles.negativeValue, fontWeight: 700 }}>
+          <div style={{
+            height: 1,
+            background: 'rgba(255,255,255,0.1)',
+            margin: '16px 0',
+          }} />
+          <div style={{ ...styles.detailRow, padding: '12px 0 0 0' }}>
+            <span style={{
+              fontSize: 16,
+              color: 'rgba(255,255,255,0.9)',
+              fontWeight: 700,
+            }}>
+              控除合計
+            </span>
+            <span style={{
+              ...styles.negativeValue,
+              fontWeight: 800,
+              fontSize: 18,
+            }}>
               -{formatCurrency(totalDeductions)}
             </span>
           </div>

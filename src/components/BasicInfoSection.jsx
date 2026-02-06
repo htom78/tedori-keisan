@@ -3,84 +3,97 @@ import { formatNumber, parseNumericInput } from '../utils/format'
 
 const styles = {
   card: {
-    background: '#1e1e1e',
+    background: 'rgba(255,255,255,0.03)',
+    backdropFilter: 'blur(20px)',
     border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: 16,
-    padding: 24,
-    marginBottom: 16,
+    borderRadius: 24,
+    padding: 40,
+    marginBottom: 24,
   },
   title: {
     fontSize: 18,
     fontWeight: 700,
-    color: '#e2e8f0',
-    marginBottom: 16,
+    color: '#fff',
+    marginBottom: 24,
     display: 'flex',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
   },
   label: {
-    fontSize: 13,
-    color: '#9ca3af',
-    marginBottom: 6,
+    fontSize: 14,
+    fontWeight: 600,
+    color: 'rgba(255,255,255,0.7)',
+    marginBottom: 12,
     display: 'block',
+    letterSpacing: 0.3,
   },
   input: {
     width: '100%',
-    padding: '14px 16px',
-    background: '#2a2a2a',
-    border: '1px solid #3a3a3a',
-    borderRadius: 12,
-    color: '#e2e8f0',
+    padding: '16px 20px',
+    background: 'rgba(0,0,0,0.3)',
+    border: '2px solid rgba(255,255,255,0.1)',
+    borderRadius: 16,
+    color: '#fff',
     fontSize: 18,
+    fontWeight: 600,
     outline: 'none',
     textAlign: 'right',
+    transition: 'all 0.3s ease',
   },
   select: {
     width: '100%',
-    padding: '14px 40px 14px 16px',
-    background: '#2a2a2a',
-    border: '1px solid #3a3a3a',
-    borderRadius: 12,
-    color: '#e2e8f0',
-    fontSize: 15,
+    padding: '16px 20px',
+    background: 'rgba(0,0,0,0.3)',
+    border: '2px solid rgba(255,255,255,0.1)',
+    borderRadius: 16,
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 600,
     outline: 'none',
     appearance: 'none',
     cursor: 'pointer',
-    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E")`,
+    transition: 'all 0.3s ease',
+    backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")`,
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'right 14px center',
-    backgroundSize: 16,
+    backgroundPosition: 'right 20px center',
   },
   row: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: 12,
-    marginBottom: 16,
+    gap: 16,
+    marginBottom: 28,
   },
   ageGroup: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: 8,
+    gap: 10,
   },
   ageBtn: (active) => ({
-    padding: '14px 8px',
-    background: active ? '#f87171' : '#2a2a2a',
-    border: active ? '1px solid #f87171' : '1px solid #3a3a3a',
+    padding: '14px 16px',
+    background: active
+      ? 'linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%)'
+      : 'rgba(255,255,255,0.05)',
+    border: active
+      ? '2px solid rgba(255, 107, 107, 0.5)'
+      : '2px solid rgba(255,255,255,0.1)',
     borderRadius: 12,
-    color: active ? '#ffffff' : '#9ca3af',
+    color: '#fff',
     fontSize: 14,
+    fontWeight: 600,
     cursor: 'pointer',
-    transition: 'all 0.2s',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
     textAlign: 'center',
-    fontWeight: active ? 600 : 400,
+    transform: active ? 'scale(1)' : 'scale(0.98)',
+    boxShadow: active ? '0 8px 20px rgba(255, 107, 107, 0.3)' : 'none',
   }),
   salaryPrefix: {
     position: 'absolute',
-    left: 12,
+    left: 16,
     top: '50%',
     transform: 'translateY(-50%)',
-    color: '#9ca3af',
-    fontSize: 14,
+    color: 'rgba(255,255,255,0.5)',
+    fontSize: 16,
+    fontWeight: 600,
     pointerEvents: 'none',
   },
   inputWrap: {
@@ -116,16 +129,16 @@ export default function BasicInfoSection({
   return (
     <div style={styles.card}>
       <div style={styles.title}>
-        <span style={{ color: '#f87171' }}>&#9679;</span>
+        <span style={{ color: '#ff6b6b' }}>&#9679;</span>
         基本情報
       </div>
 
-      <div style={{ marginBottom: 12 }}>
+      <div style={{ marginBottom: 28 }}>
         <label style={styles.label}>基本給（月額）</label>
-        <div style={styles.inputWrap}>
+        <div style={styles.inputWrap} className="input-glow">
           <span style={styles.salaryPrefix}>¥</span>
           <input
-            style={{ ...styles.input, paddingLeft: 28 }}
+            style={{ ...styles.input, paddingLeft: 36 }}
             value={salary === 0 ? '' : formatNumber(salary)}
             onChange={handleSalaryChange}
             onFocus={handleSalaryFocus}
@@ -145,7 +158,7 @@ export default function BasicInfoSection({
             onChange={(e) => onMonthChange(Number(e.target.value))}
           >
             {MONTHS.map((m) => (
-              <option key={m.value} value={m.value}>
+              <option key={m.value} value={m.value} style={{ background: '#1a1a1a' }}>
                 {m.label}
               </option>
             ))}
@@ -159,7 +172,7 @@ export default function BasicInfoSection({
             onChange={(e) => onPrefectureChange(Number(e.target.value))}
           >
             {PREFECTURES.map((p, i) => (
-              <option key={p.code} value={i}>
+              <option key={p.code} value={i} style={{ background: '#1a1a1a' }}>
                 {p.name} ({p.healthRate}%)
               </option>
             ))}

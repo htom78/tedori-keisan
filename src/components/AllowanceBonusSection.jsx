@@ -4,29 +4,30 @@ import { formatNumber, parseNumericInput } from '../utils/format'
 
 const styles = {
   card: {
-    background: '#1e1e1e',
+    background: 'rgba(255,255,255,0.03)',
+    backdropFilter: 'blur(20px)',
     border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: 16,
-    padding: 24,
-    marginBottom: 16,
+    borderRadius: 24,
+    padding: 40,
+    marginBottom: 24,
   },
   title: {
     fontSize: 18,
     fontWeight: 700,
-    color: '#e2e8f0',
-    marginBottom: 16,
+    color: '#fff',
+    marginBottom: 24,
     display: 'flex',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
   },
   subSection: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   subTitle: {
-    fontSize: 14,
-    fontWeight: 600,
-    color: '#cbd5e1',
-    marginBottom: 10,
+    fontSize: 16,
+    fontWeight: 700,
+    color: 'rgba(255,255,255,0.9)',
+    marginBottom: 14,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -34,103 +35,114 @@ const styles = {
   itemRow: {
     display: 'flex',
     alignItems: 'center',
-    gap: 8,
-    marginBottom: 6,
+    gap: 10,
+    marginBottom: 10,
   },
   itemName: {
     flex: 1,
-    fontSize: 13,
-    color: '#cbd5e1',
+    fontSize: 14,
+    fontWeight: 600,
+    color: 'rgba(255,255,255,0.7)',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
   input: {
-    width: 120,
-    padding: '6px 8px',
-    background: '#2a2a2a',
-    border: '1px solid #3a3a3a',
-    borderRadius: 6,
-    color: '#e2e8f0',
-    fontSize: 13,
+    width: 130,
+    padding: '10px 14px',
+    background: 'rgba(0,0,0,0.3)',
+    border: '1px solid rgba(255,255,255,0.1)',
+    borderRadius: 10,
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 600,
     outline: 'none',
     textAlign: 'right',
+    transition: 'all 0.3s ease',
+    fontFamily: '"Outfit", monospace',
   },
   removeBtn: {
-    background: 'none',
-    border: 'none',
-    color: '#6b7280',
-    cursor: 'pointer',
     padding: 4,
+    background: 'rgba(255, 107, 107, 0.2)',
+    border: 'none',
+    borderRadius: 6,
+    color: '#ff6b6b',
+    cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
-    borderRadius: 4,
-    transition: 'color 0.2s',
+    transition: 'all 0.2s',
   },
   addBtn: {
     display: 'flex',
     alignItems: 'center',
-    gap: 4,
-    padding: '6px 12px',
-    background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: 8,
-    color: '#9ca3af',
-    fontSize: 12,
+    gap: 6,
+    padding: '10px 16px',
+    background: 'rgba(78, 205, 196, 0.15)',
+    border: '1px solid rgba(78, 205, 196, 0.3)',
+    borderRadius: 10,
+    color: '#4ecdc4',
+    fontSize: 13,
+    fontWeight: 600,
     cursor: 'pointer',
-    transition: 'all 0.2s',
+    transition: 'all 0.3s ease',
   },
   presetGrid: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: 4,
-    marginBottom: 10,
+    gap: 6,
+    marginBottom: 12,
   },
   presetBtn: {
-    padding: '4px 10px',
-    background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: 6,
-    color: '#9ca3af',
-    fontSize: 11,
+    padding: '6px 12px',
+    background: 'rgba(255,255,255,0.03)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: 8,
+    color: 'rgba(255,255,255,0.6)',
+    fontSize: 12,
+    fontWeight: 500,
     cursor: 'pointer',
-    transition: 'all 0.2s',
+    transition: 'all 0.3s ease',
   },
   bonusRow: {
     display: 'flex',
     alignItems: 'center',
-    gap: 8,
-    marginBottom: 6,
+    gap: 10,
+    marginBottom: 10,
   },
   bonusSelect: {
-    padding: '6px 8px',
-    background: '#2a2a2a',
-    border: '1px solid #3a3a3a',
-    borderRadius: 6,
-    color: '#e2e8f0',
-    fontSize: 13,
+    padding: '10px 12px',
+    background: 'rgba(0,0,0,0.3)',
+    border: '1px solid rgba(255,255,255,0.1)',
+    borderRadius: 10,
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 600,
     outline: 'none',
     appearance: 'none',
     cursor: 'pointer',
-    width: 80,
+    width: 90,
+    backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='white' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 10px center',
   },
   checkbox: {
-    width: 16,
-    height: 16,
+    width: 18,
+    height: 18,
     accentColor: '#10b981',
     cursor: 'pointer',
   },
   emptyNote: {
-    fontSize: 12,
-    color: '#6b7280',
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.4)',
     fontStyle: 'italic',
-    padding: '8px 0',
+    padding: '10px 0',
+    textAlign: 'center',
   },
   divider: {
     height: 1,
     background: 'rgba(255,255,255,0.08)',
-    margin: '16px 0',
+    margin: '20px 0',
   },
 }
 
@@ -177,7 +189,7 @@ function AllowanceList({ items, onUpdate, onRemove, onAdd, presets, usedNames })
           <span style={styles.itemName}>
             {item.name}
             {item.taxExempt && (
-              <span style={{ fontSize: 10, color: '#22c55e', marginLeft: 4 }}>非課税</span>
+              <span style={{ fontSize: 11, color: '#22c55e', marginLeft: 6 }}>非課税</span>
             )}
           </span>
           <NumericInput
@@ -230,10 +242,10 @@ function BonusList({ items, onUpdate, onRemove, onAdd }) {
         <div style={{
           fontSize: 12,
           color: '#fbbf24',
-          padding: '4px 8px',
+          padding: '6px 12px',
           background: 'rgba(245,158,11,0.1)',
-          borderRadius: 6,
-          marginBottom: 6,
+          borderRadius: 8,
+          marginBottom: 10,
         }}>
           同じ月が複数設定されています（最初のエントリのみ適用）
         </div>
@@ -253,7 +265,7 @@ function BonusList({ items, onUpdate, onRemove, onAdd }) {
             onChange={(e) => onUpdate(item.id, 'month', Number(e.target.value))}
           >
             {MONTHS.map((m) => (
-              <option key={m.value} value={m.value}>
+              <option key={m.value} value={m.value} style={{ background: '#1a1a1a' }}>
                 {m.label}
               </option>
             ))}
@@ -347,7 +359,7 @@ export default function AllowanceBonusSection({
   return (
     <div style={styles.card}>
       <div style={styles.title}>
-        <span style={{ color: '#06b6d4' }}>&#9679;</span>
+        <span style={{ color: '#4ecdc4' }}>&#9679;</span>
         手当・賞与・控除
       </div>
 

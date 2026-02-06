@@ -1,8 +1,8 @@
-import { Minus, Plus, Eye, EyeOff, ShieldCheck } from 'lucide-react'
+import { Minus, Plus, Eye, EyeOff, ShieldCheck, Check } from 'lucide-react'
 import { formatNumber, parseNumericInput } from '../utils/format'
 
 const colors = {
-  withholding: '#ef4444',
+  withholding: '#ffc107',
   resident: '#f97316',
 }
 
@@ -15,33 +15,34 @@ function hexToRgb(hex) {
 
 const styles = {
   card: {
-    background: '#1e1e1e',
+    background: 'rgba(255,255,255,0.03)',
+    backdropFilter: 'blur(20px)',
     border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: 16,
-    padding: 24,
-    marginBottom: 16,
+    borderRadius: 24,
+    padding: 40,
+    marginBottom: 24,
   },
   title: {
     fontSize: 18,
     fontWeight: 700,
-    color: '#e2e8f0',
-    marginBottom: 16,
+    color: '#fff',
+    marginBottom: 24,
     display: 'flex',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
   },
   subCard: (color) => ({
-    background: `rgba(${hexToRgb(color)},0.08)`,
-    border: `1px solid rgba(${hexToRgb(color)},0.2)`,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 12,
+    background: `rgba(${hexToRgb(color)},0.05)`,
+    border: `1px solid rgba(${hexToRgb(color)},0.15)`,
+    borderRadius: 24,
+    padding: 32,
+    marginBottom: 16,
   }),
   subTitle: (color) => ({
-    fontSize: 15,
-    fontWeight: 600,
+    fontSize: 16,
+    fontWeight: 700,
     color,
-    marginBottom: 14,
+    marginBottom: 16,
     display: 'flex',
     alignItems: 'center',
     gap: 8,
@@ -50,97 +51,117 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 14,
+    marginBottom: 16,
   },
   label: {
-    fontSize: 12,
-    color: '#9ca3af',
-    marginBottom: 4,
+    fontSize: 14,
+    fontWeight: 600,
+    color: 'rgba(255,255,255,0.7)',
+    marginBottom: 12,
     display: 'block',
+    letterSpacing: 0.3,
   },
   input: {
     width: '100%',
-    padding: '12px 14px',
-    background: '#2a2a2a',
-    border: '1px solid #3a3a3a',
-    borderRadius: 10,
-    color: '#e2e8f0',
-    fontSize: 14,
+    padding: '16px 20px',
+    background: 'rgba(0,0,0,0.3)',
+    border: '2px solid rgba(255,255,255,0.1)',
+    borderRadius: 16,
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 600,
     outline: 'none',
     textAlign: 'right',
+    transition: 'all 0.3s ease',
   },
   displayBox: {
     width: '100%',
-    padding: '14px 16px',
-    background: '#2a2a2a',
-    border: '1px solid #3a3a3a',
-    borderRadius: 12,
-    color: '#9ca3af',
-    fontSize: 14,
+    padding: '16px 20px',
+    background: 'rgba(0,0,0,0.3)',
+    border: '2px solid rgba(255,255,255,0.1)',
+    borderRadius: 16,
+    color: 'rgba(255,255,255,0.6)',
+    fontSize: 16,
+    fontWeight: 600,
     textAlign: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
+    gap: 10,
+    transition: 'all 0.3s ease',
   },
   toggleRow: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
-    gap: 8,
+    gap: 12,
     marginBottom: 8,
   },
-  toggleBtn: (active) => ({
-    padding: '12px 8px',
-    background: active ? 'rgba(239,68,68,0.15)' : '#2a2a2a',
-    border: active ? '1px solid rgba(239,68,68,0.3)' : '1px solid #3a3a3a',
-    borderRadius: 10,
-    color: active ? '#f87171' : '#9ca3af',
-    fontSize: 13,
+  toggleBtn: (active, color) => ({
+    padding: 14,
+    background: active
+      ? `linear-gradient(135deg, ${color} 0%, ${color}dd 100%)`
+      : 'rgba(255,255,255,0.05)',
+    border: active
+      ? `2px solid rgba(${hexToRgb(color)},0.5)`
+      : '2px solid rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    color: active ? '#000' : '#fff',
+    fontSize: 14,
     cursor: 'pointer',
-    fontWeight: active ? 600 : 400,
-    transition: 'all 0.2s',
+    fontWeight: 600,
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
     textAlign: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
   }),
   tabs: {
     display: 'flex',
-    gap: 6,
-    marginBottom: 12,
+    gap: 8,
+    marginBottom: 16,
   },
   tab: (active, color) => ({
     flex: 1,
-    padding: '10px 8px',
-    background: active ? `rgba(${hexToRgb(color)},0.15)` : '#2a2a2a',
-    border: active ? `1px solid rgba(${hexToRgb(color)},0.3)` : '1px solid #3a3a3a',
-    borderRadius: 10,
-    color: active ? color : '#9ca3af',
-    fontSize: 12,
+    padding: '12px 10px',
+    background: active
+      ? `linear-gradient(135deg, ${color} 0%, ${color}dd 100%)`
+      : 'rgba(255,255,255,0.05)',
+    border: active
+      ? `2px solid rgba(${hexToRgb(color)},0.5)`
+      : '2px solid rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    color: active ? '#fff' : 'rgba(255,255,255,0.6)',
+    fontSize: 13,
     cursor: 'pointer',
-    fontWeight: active ? 600 : 400,
-    transition: 'all 0.2s',
+    fontWeight: 600,
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
     textAlign: 'center',
+    transform: active ? 'scale(1)' : 'scale(0.98)',
+    boxShadow: active ? `0 6px 16px rgba(${hexToRgb(color)},0.3)` : 'none',
   }),
   visibilityBtn: {
     background: 'none',
     border: 'none',
-    color: '#6b7280',
+    color: 'rgba(255,255,255,0.4)',
     cursor: 'pointer',
     padding: 4,
     display: 'flex',
     alignItems: 'center',
   },
   info: {
-    fontSize: 12,
-    color: '#6b7280',
-    marginTop: 8,
-    lineHeight: 1.5,
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.4)',
+    marginTop: 10,
+    lineHeight: 1.6,
   },
   hiddenNote: {
-    fontSize: 13,
-    color: '#6b7280',
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.4)',
     textAlign: 'center',
-    padding: '14px 0',
+    padding: '16px 0',
     fontStyle: 'italic',
   },
 }
@@ -162,7 +183,7 @@ function WithholdingCard({
   return (
     <div style={styles.subCard(colors.withholding)}>
       <div style={styles.subTitle(colors.withholding)}>
-        <ShieldCheck size={16} /> 源泉所得税設定
+        <ShieldCheck size={18} /> 源泉所得税設定
       </div>
 
       <div
@@ -170,8 +191,8 @@ function WithholdingCard({
         onClick={() => onDependentsChange(dependents === 0 ? 1 : 0)}
       >
         <Minus
-          size={14}
-          style={{ cursor: 'pointer', color: '#6b7280' }}
+          size={16}
+          style={{ cursor: 'pointer', color: 'rgba(255,255,255,0.4)' }}
           onClick={(e) => {
             e.stopPropagation()
             onDependentsChange(Math.max(0, dependents - 1))
@@ -179,8 +200,8 @@ function WithholdingCard({
         />
         <span>{dependentLabel}</span>
         <Plus
-          size={14}
-          style={{ cursor: 'pointer', color: '#6b7280' }}
+          size={16}
+          style={{ cursor: 'pointer', color: 'rgba(255,255,255,0.4)' }}
           onClick={(e) => {
             e.stopPropagation()
             onDependentsChange(dependents + 1)
@@ -190,21 +211,24 @@ function WithholdingCard({
 
       <div style={styles.toggleRow}>
         <button
-          style={styles.toggleBtn(isElectronic)}
+          style={styles.toggleBtn(isElectronic, colors.withholding)}
           onClick={() => onElectronicChange(!isElectronic)}
         >
+          {isElectronic && <Check size={16} />}
           電算
         </button>
         <button
-          style={styles.toggleBtn(isTaxExempt)}
+          style={styles.toggleBtn(isTaxExempt, colors.withholding)}
           onClick={() => onTaxExemptChange(!isTaxExempt)}
         >
+          {isTaxExempt && <Check size={16} />}
           免除
         </button>
         <button
-          style={styles.toggleBtn(isNonResident)}
+          style={styles.toggleBtn(isNonResident, colors.withholding)}
           onClick={() => onNonResidentChange(!isNonResident)}
         >
+          {isNonResident && <Check size={16} />}
           非居住
         </button>
       </div>
@@ -244,7 +268,7 @@ function ResidentCard({
           onClick={() => onHiddenChange(!hidden)}
           title={hidden ? '住民税を表示' : '住民税を非表示'}
         >
-          {hidden ? <EyeOff size={16} /> : <Eye size={16} />}
+          {hidden ? <EyeOff size={18} /> : <Eye size={18} />}
         </button>
       </div>
 
