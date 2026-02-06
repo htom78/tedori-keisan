@@ -206,8 +206,11 @@ export default function App() {
     <div style={styles.container}>
       <header style={styles.header}>
         <div style={styles.headerBadge}>Salary Calculator</div>
-        <h1 style={styles.headerTitle}>手取り計算ツール</h1>
-        <p style={styles.headerSub}>Japanese Take-Home Pay Calculator</p>
+        <h1 style={styles.headerTitle}>手取り計算機</h1>
+        <p style={styles.headerSub}>月給から税金・社会保険料を差し引いた実際の手取り額を瞬時に計算</p>
+        <p style={{ ...styles.headerSub, fontSize: 12, marginTop: 4, color: 'rgba(255,255,255,0.35)' }}>
+          賞与計算機能付き | 指定月の詳細計算
+        </p>
       </header>
 
       <div style={styles.layout(isDesktop)}>
