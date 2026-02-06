@@ -2,9 +2,8 @@ import { Minus, Plus } from 'lucide-react'
 
 const styles = {
   card: {
-    background: 'rgba(255,255,255,0.05)',
-    backdropFilter: 'blur(12px)',
-    border: '1px solid rgba(255,255,255,0.1)',
+    background: '#ffffff',
+    border: '1px solid #e5e7eb',
     borderRadius: 16,
     padding: 24,
     marginBottom: 16,
@@ -12,6 +11,7 @@ const styles = {
   title: {
     fontSize: 18,
     fontWeight: 700,
+    color: '#1a1a1a',
     marginBottom: 16,
     display: 'flex',
     alignItems: 'center',
@@ -19,7 +19,7 @@ const styles = {
   },
   label: {
     fontSize: 13,
-    color: '#94a3b8',
+    color: '#6b7280',
     marginBottom: 6,
     display: 'block',
   },
@@ -33,8 +33,8 @@ const styles = {
     width: 36,
     height: 36,
     borderRadius: 8,
-    background: 'rgba(255,255,255,0.08)',
-    border: '1px solid rgba(255,255,255,0.15)',
+    background: '#2a2a2a',
+    border: '1px solid #3a3a3a',
     color: '#e2e8f0',
     cursor: 'pointer',
     display: 'flex',
@@ -45,13 +45,13 @@ const styles = {
   stepperValue: {
     fontSize: 24,
     fontWeight: 700,
-    color: '#e2e8f0',
+    color: '#1a1a1a',
     minWidth: 40,
     textAlign: 'center',
   },
   stepperLabel: {
     fontSize: 13,
-    color: '#94a3b8',
+    color: '#6b7280',
     marginLeft: 8,
   },
   checkbox: {
@@ -59,7 +59,7 @@ const styles = {
     alignItems: 'center',
     gap: 8,
     fontSize: 13,
-    color: '#cbd5e1',
+    color: '#374151',
     cursor: 'pointer',
     marginBottom: 8,
   },
@@ -71,7 +71,7 @@ const styles = {
   },
   description: {
     fontSize: 11,
-    color: '#64748b',
+    color: '#9ca3af',
     marginTop: 4,
     paddingLeft: 24,
   },

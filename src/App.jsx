@@ -27,17 +27,27 @@ const styles = {
     textAlign: 'center',
     marginBottom: 32,
   },
+  headerBadge: {
+    display: 'inline-block',
+    padding: '4px 14px',
+    borderRadius: 20,
+    fontSize: 12,
+    fontWeight: 600,
+    background: 'rgba(16,185,129,0.15)',
+    color: '#10b981',
+    border: '1px solid rgba(16,185,129,0.3)',
+    marginBottom: 8,
+    letterSpacing: 0.5,
+  },
   headerTitle: {
     fontSize: 28,
     fontWeight: 800,
-    background: 'linear-gradient(135deg, #2dd4bf, #3b82f6)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
+    color: '#ffffff',
     marginBottom: 4,
   },
   headerSub: {
     fontSize: 14,
-    color: '#64748b',
+    color: '#9ca3af',
   },
   layout: (isDesktop) => ({
     display: isDesktop ? 'grid' : 'block',
@@ -193,6 +203,7 @@ export default function App() {
   return (
     <div style={styles.container}>
       <header style={styles.header}>
+        <div style={styles.headerBadge}>Salary Calculator</div>
         <h1 style={styles.headerTitle}>手取り計算ツール</h1>
         <p style={styles.headerSub}>Japanese Take-Home Pay Calculator</p>
       </header>

@@ -6,9 +6,8 @@ const teal = '#2dd4bf'
 
 const styles = {
   panel: (isDesktop) => ({
-    background: 'rgba(255,255,255,0.05)',
-    backdropFilter: 'blur(16px)',
-    border: '1px solid rgba(255,255,255,0.1)',
+    background: '#1e1e1e',
+    border: '1px solid #2a2a2a',
     borderRadius: 16,
     padding: 24,
     position: isDesktop ? 'sticky' : 'relative',
@@ -17,6 +16,7 @@ const styles = {
   title: {
     fontSize: 18,
     fontWeight: 700,
+    color: '#e2e8f0',
     marginBottom: 20,
     display: 'flex',
     alignItems: 'center',
@@ -26,13 +26,13 @@ const styles = {
     textAlign: 'center',
     padding: '20px 0',
     marginBottom: 16,
-    background: `rgba(45,212,191,0.06)`,
+    background: 'rgba(45,212,191,0.08)',
     borderRadius: 12,
-    border: `1px solid rgba(45,212,191,0.15)`,
+    border: '1px solid rgba(45,212,191,0.2)',
   },
   heroLabel: {
     fontSize: 13,
-    color: '#94a3b8',
+    color: '#9ca3af',
     marginBottom: 4,
   },
   heroAmount: {
@@ -53,7 +53,7 @@ const styles = {
       : rate > 20
         ? 'rgba(245,158,11,0.15)'
         : 'rgba(34,197,94,0.15)',
-    color: rate > 30 ? '#ef4444' : rate > 20 ? '#f59e0b' : '#22c55e',
+    color: rate > 30 ? '#f87171' : rate > 20 ? '#fbbf24' : '#34d399',
     border: `1px solid ${rate > 30 ? 'rgba(239,68,68,0.3)' : rate > 20 ? 'rgba(245,158,11,0.3)' : 'rgba(34,197,94,0.3)'}`,
   }),
   summaryRow: {
@@ -64,7 +64,7 @@ const styles = {
     fontSize: 14,
   },
   summaryLabel: {
-    color: '#94a3b8',
+    color: '#9ca3af',
   },
   summaryValue: {
     fontWeight: 600,
@@ -73,16 +73,16 @@ const styles = {
   },
   divider: {
     height: 1,
-    background: 'rgba(255,255,255,0.08)',
+    background: '#2a2a2a',
     margin: '8px 0',
   },
   expandBtn: {
     width: '100%',
     padding: '10px 0',
-    background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.1)',
+    background: '#252525',
+    border: '1px solid #3a3a3a',
     borderRadius: 8,
-    color: '#94a3b8',
+    color: '#9ca3af',
     fontSize: 13,
     cursor: 'pointer',
     display: 'flex',
@@ -98,7 +98,7 @@ const styles = {
   detailTitle: {
     fontSize: 12,
     fontWeight: 600,
-    color: '#64748b',
+    color: '#6b7280',
     textTransform: 'uppercase',
     letterSpacing: 1,
     marginBottom: 8,
@@ -112,13 +112,13 @@ const styles = {
     fontSize: 13,
   },
   detailLabel: {
-    color: '#64748b',
+    color: '#6b7280',
     display: 'flex',
     alignItems: 'center',
     gap: 6,
   },
   detailValue: {
-    color: '#cbd5e1',
+    color: '#d1d5db',
     fontVariantNumeric: 'tabular-nums',
   },
   dot: (color) => ({
@@ -138,9 +138,9 @@ const styles = {
     borderRadius: 10,
     fontSize: 11,
     fontWeight: 600,
-    background: 'rgba(245,158,11,0.15)',
-    color: '#fbbf24',
-    border: '1px solid rgba(245,158,11,0.3)',
+    background: 'rgba(251,146,60,0.15)',
+    color: '#fb923c',
+    border: '1px solid rgba(251,146,60,0.3)',
     marginLeft: 8,
   },
 }
@@ -158,7 +158,7 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
         <div style={{
           textAlign: 'center',
           padding: '32px 0',
-          color: '#64748b',
+          color: '#6b7280',
           fontSize: 14,
         }}>
           基本給を入力すると計算結果が表示されます
@@ -233,10 +233,10 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
           <span style={styles.summaryLabel}>住民税</span>
           <span style={{
             fontSize: 11,
-            color: '#64748b',
+            color: '#6b7280',
             fontStyle: 'italic',
             padding: '2px 8px',
-            background: 'rgba(255,255,255,0.05)',
+            background: '#252525',
             borderRadius: 4,
           }}>
             除外中
@@ -358,7 +358,7 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
 
           <div style={{ ...styles.divider, marginTop: 12 }} />
           <div style={{ ...styles.detailRow, marginTop: 8 }}>
-            <span style={{ fontSize: 12, color: '#64748b' }}>控除合計</span>
+            <span style={{ fontSize: 12, color: '#6b7280' }}>控除合計</span>
             <span style={{ ...styles.negativeValue, fontWeight: 700 }}>
               -{formatCurrency(totalDeductions)}
             </span>

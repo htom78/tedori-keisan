@@ -3,9 +3,8 @@ import { formatNumber, parseNumericInput } from '../utils/format'
 
 const styles = {
   card: {
-    background: 'rgba(255,255,255,0.05)',
-    backdropFilter: 'blur(12px)',
-    border: '1px solid rgba(255,255,255,0.1)',
+    background: '#ffffff',
+    border: '1px solid #e5e7eb',
     borderRadius: 16,
     padding: 24,
     marginBottom: 16,
@@ -13,6 +12,7 @@ const styles = {
   title: {
     fontSize: 18,
     fontWeight: 700,
+    color: '#1a1a1a',
     marginBottom: 16,
     display: 'flex',
     alignItems: 'center',
@@ -20,15 +20,15 @@ const styles = {
   },
   label: {
     fontSize: 13,
-    color: '#94a3b8',
+    color: '#6b7280',
     marginBottom: 6,
     display: 'block',
   },
   input: {
     width: '100%',
     padding: '10px 12px',
-    background: 'rgba(255,255,255,0.08)',
-    border: '1px solid rgba(255,255,255,0.15)',
+    background: '#2a2a2a',
+    border: '1px solid #3a3a3a',
     borderRadius: 8,
     color: '#e2e8f0',
     fontSize: 16,
@@ -38,8 +38,8 @@ const styles = {
   select: {
     width: '100%',
     padding: '10px 12px',
-    background: 'rgba(255,255,255,0.08)',
-    border: '1px solid rgba(255,255,255,0.15)',
+    background: '#2a2a2a',
+    border: '1px solid #3a3a3a',
     borderRadius: 8,
     color: '#e2e8f0',
     fontSize: 14,
@@ -60,10 +60,10 @@ const styles = {
   },
   ageBtn: (active) => ({
     padding: '8px 4px',
-    background: active ? 'rgba(59,130,246,0.3)' : 'rgba(255,255,255,0.05)',
-    border: active ? '1px solid #3b82f6' : '1px solid rgba(255,255,255,0.1)',
+    background: active ? '#10b981' : '#f3f4f6',
+    border: active ? '1px solid #10b981' : '1px solid #e5e7eb',
     borderRadius: 8,
-    color: active ? '#93c5fd' : '#94a3b8',
+    color: active ? '#ffffff' : '#6b7280',
     fontSize: 12,
     cursor: 'pointer',
     transition: 'all 0.2s',
@@ -75,7 +75,7 @@ const styles = {
     left: 12,
     top: '50%',
     transform: 'translateY(-50%)',
-    color: '#64748b',
+    color: '#9ca3af',
     fontSize: 14,
     pointerEvents: 'none',
   },
@@ -112,7 +112,7 @@ export default function BasicInfoSection({
   return (
     <div style={styles.card}>
       <div style={styles.title}>
-        <span style={{ color: '#3b82f6' }}>&#9679;</span>
+        <span style={{ color: '#10b981' }}>&#9679;</span>
         基本情報
       </div>
 

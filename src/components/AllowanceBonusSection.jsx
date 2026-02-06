@@ -4,9 +4,8 @@ import { formatNumber, parseNumericInput } from '../utils/format'
 
 const styles = {
   card: {
-    background: 'rgba(255,255,255,0.05)',
-    backdropFilter: 'blur(12px)',
-    border: '1px solid rgba(255,255,255,0.1)',
+    background: '#ffffff',
+    border: '1px solid #e5e7eb',
     borderRadius: 16,
     padding: 24,
     marginBottom: 16,
@@ -14,6 +13,7 @@ const styles = {
   title: {
     fontSize: 18,
     fontWeight: 700,
+    color: '#1a1a1a',
     marginBottom: 16,
     display: 'flex',
     alignItems: 'center',
@@ -25,7 +25,7 @@ const styles = {
   subTitle: {
     fontSize: 14,
     fontWeight: 600,
-    color: '#cbd5e1',
+    color: '#374151',
     marginBottom: 10,
     display: 'flex',
     alignItems: 'center',
@@ -40,7 +40,7 @@ const styles = {
   itemName: {
     flex: 1,
     fontSize: 13,
-    color: '#cbd5e1',
+    color: '#374151',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -49,8 +49,8 @@ const styles = {
   input: {
     width: 120,
     padding: '6px 8px',
-    background: 'rgba(255,255,255,0.08)',
-    border: '1px solid rgba(255,255,255,0.15)',
+    background: '#2a2a2a',
+    border: '1px solid #3a3a3a',
     borderRadius: 6,
     color: '#e2e8f0',
     fontSize: 13,
@@ -60,7 +60,7 @@ const styles = {
   removeBtn: {
     background: 'none',
     border: 'none',
-    color: '#64748b',
+    color: '#9ca3af',
     cursor: 'pointer',
     padding: 4,
     display: 'flex',
@@ -73,10 +73,10 @@ const styles = {
     alignItems: 'center',
     gap: 4,
     padding: '6px 12px',
-    background: 'rgba(255,255,255,0.08)',
-    border: '1px solid rgba(255,255,255,0.15)',
+    background: '#f3f4f6',
+    border: '1px solid #e5e7eb',
     borderRadius: 8,
-    color: '#94a3b8',
+    color: '#6b7280',
     fontSize: 12,
     cursor: 'pointer',
     transition: 'all 0.2s',
@@ -89,10 +89,10 @@ const styles = {
   },
   presetBtn: {
     padding: '4px 10px',
-    background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.1)',
+    background: '#f3f4f6',
+    border: '1px solid #e5e7eb',
     borderRadius: 6,
-    color: '#94a3b8',
+    color: '#6b7280',
     fontSize: 11,
     cursor: 'pointer',
     transition: 'all 0.2s',
@@ -105,8 +105,8 @@ const styles = {
   },
   bonusSelect: {
     padding: '6px 8px',
-    background: 'rgba(255,255,255,0.08)',
-    border: '1px solid rgba(255,255,255,0.15)',
+    background: '#2a2a2a',
+    border: '1px solid #3a3a3a',
     borderRadius: 6,
     color: '#e2e8f0',
     fontSize: 13,
@@ -118,18 +118,18 @@ const styles = {
   checkbox: {
     width: 16,
     height: 16,
-    accentColor: '#3b82f6',
+    accentColor: '#10b981',
     cursor: 'pointer',
   },
   emptyNote: {
     fontSize: 12,
-    color: '#64748b',
+    color: '#9ca3af',
     fontStyle: 'italic',
     padding: '8px 0',
   },
   divider: {
     height: 1,
-    background: 'rgba(255,255,255,0.08)',
+    background: '#e5e7eb',
     margin: '16px 0',
   },
 }
@@ -229,9 +229,9 @@ function BonusList({ items, onUpdate, onRemove, onAdd }) {
       {hasDuplicates && (
         <div style={{
           fontSize: 12,
-          color: '#f59e0b',
+          color: '#d97706',
           padding: '4px 8px',
-          background: 'rgba(245,158,11,0.1)',
+          background: '#fffbeb',
           borderRadius: 6,
           marginBottom: 6,
         }}>
