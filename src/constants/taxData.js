@@ -161,6 +161,18 @@ export const RATES = {
   unionHealth: 9.50,      // Health union fixed total rate
 }
 
+// Pension bonus cap per occurrence (標準賞与額上限)
+export const PENSION_BONUS_CAP = 1500000
+
+// Non-resident flat withholding rate (乙欄 20% + 復興2.1% = 20.42%)
+export const NON_RESIDENT_TAX_RATE = 20.42
+
+// Commute allowance tax-free limit (通勤手当非課税限度額)
+export const COMMUTE_TAX_FREE_LIMIT = 150000
+
+// Employment insurance monthly earnings cap
+export const EMPLOYMENT_INSURANCE_CAP = 1620000
+
 // Employment insurance categories and employee rates (%)
 export const EMPLOYMENT_CATEGORIES = [
   { id: 'general', label: '一般の事業', rate: 0.55 },
@@ -207,7 +219,7 @@ export const MONTHS = Array.from({ length: 12 }, (_, i) => ({
 
 // Preset allowances
 export const PRESET_ALLOWANCES = [
-  { id: 'commute', name: '通勤手当', defaultAmount: 15000 },
+  { id: 'commute', name: '通勤手当', defaultAmount: 15000, taxExempt: true },
   { id: 'housing', name: '住宅手当', defaultAmount: 20000 },
   { id: 'family', name: '家族手当', defaultAmount: 15000 },
   { id: 'overtime', name: '残業手当', defaultAmount: 30000 },

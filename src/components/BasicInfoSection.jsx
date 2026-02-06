@@ -55,7 +55,7 @@ const styles = {
   },
   ageGroup: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))',
     gap: 6,
   },
   ageBtn: (active) => ({

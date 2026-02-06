@@ -145,10 +145,27 @@ const styles = {
   },
 }
 
-export default function ResultPanel({ result, isDesktop }) {
+export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
   const [expanded, setExpanded] = useState(false)
 
-  if (!result) return null
+  if (!result) {
+    return (
+      <div style={styles.panel(isDesktop)}>
+        <div style={styles.title}>
+          <span style={{ color: teal }}>&#9679;</span>
+          計算結果
+        </div>
+        <div style={{
+          textAlign: 'center',
+          padding: '32px 0',
+          color: '#64748b',
+          fontSize: 14,
+        }}>
+          基本給を入力すると計算結果が表示されます
+        </div>
+      </div>
+    )
+  }
 
   const {
     grossSalary,
@@ -167,6 +184,7 @@ export default function ResultPanel({ result, isDesktop }) {
     takeHome,
     deductionRate,
     isBonusMonth,
+    taxExemptAllowances = 0,
   } = result
 
   return (
@@ -207,6 +225,21 @@ export default function ResultPanel({ result, isDesktop }) {
           <span style={styles.summaryLabel}>住民税</span>
           <span style={{ ...styles.summaryValue, color: '#f87171' }}>
             -{formatCurrency(residentTax)}
+          </span>
+        </div>
+      )}
+      {residentTaxHidden && (
+        <div style={styles.summaryRow}>
+          <span style={styles.summaryLabel}>住民税</span>
+          <span style={{
+            fontSize: 11,
+            color: '#64748b',
+            fontStyle: 'italic',
+            padding: '2px 8px',
+            background: 'rgba(255,255,255,0.05)',
+            borderRadius: 4,
+          }}>
+            除外中
           </span>
         </div>
       )}
@@ -253,6 +286,16 @@ export default function ResultPanel({ result, isDesktop }) {
             <div style={styles.detailRow}>
               <span style={styles.detailLabel}>賞与</span>
               <span style={styles.detailValue}>{formatCurrency(bonusAmount)}</span>
+            </div>
+          )}
+          {taxExemptAllowances > 0 && (
+            <div style={styles.detailRow}>
+              <span style={{ ...styles.detailLabel, color: '#22c55e' }}>
+                うち非課税手当
+              </span>
+              <span style={{ color: '#22c55e', fontVariantNumeric: 'tabular-nums', fontSize: 13 }}>
+                {formatCurrency(taxExemptAllowances)}
+              </span>
             </div>
           )}
 

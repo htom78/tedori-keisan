@@ -1,6 +1,6 @@
 {
   "project_name": "jpscalc3 - 手取り計算ツール",
-  "current_iteration": "ITER-002",
+  "current_iteration": "ITER-003",
   "iterations": [
     {
       "iteration_id": "ITER-001",
@@ -122,16 +122,103 @@
     {
       "iteration_id": "ITER-002",
       "iteration_name": "計算精度・UX改善",
-      "status": "in_progress",
+      "status": "completed",
       "start_date": "2026-02-06",
-      "end_date": "2026-02-20",
-      "tasks": [],
+      "end_date": "2026-02-06",
+      "tasks": [
+        {
+          "task_id": "TASK-011",
+          "task_name": "復興特別所得税（2.1%）の適用",
+          "status": "completed",
+          "priority": "critical",
+          "risk_level": "low",
+          "tags": ["calculation"]
+        },
+        {
+          "task_id": "TASK-012",
+          "task_name": "非居住者（乙欄）源泉徴収の実装",
+          "status": "completed",
+          "priority": "high",
+          "risk_level": "high",
+          "tags": ["calculation"]
+        },
+        {
+          "task_id": "TASK-013",
+          "task_name": "通勤手当の非課税処理（上限¥150,000）",
+          "status": "completed",
+          "priority": "high",
+          "risk_level": "high",
+          "tags": ["calculation", "ui"]
+        },
+        {
+          "task_id": "TASK-014",
+          "task_name": "賞与の社会保険料計算（年金上限¥150万）",
+          "status": "completed",
+          "priority": "high",
+          "risk_level": "high",
+          "tags": ["calculation"]
+        },
+        {
+          "task_id": "TASK-015",
+          "task_name": "雇用保険の上限額設定（¥162万）",
+          "status": "completed",
+          "priority": "medium",
+          "risk_level": "low",
+          "tags": ["calculation"]
+        },
+        {
+          "task_id": "TASK-016",
+          "task_name": "入力バリデーションとエラー表示",
+          "status": "completed",
+          "priority": "medium",
+          "risk_level": "low",
+          "tags": ["ux"]
+        },
+        {
+          "task_id": "TASK-017",
+          "task_name": "モバイルレスポンシブ修正",
+          "status": "completed",
+          "priority": "medium",
+          "risk_level": "low",
+          "tags": ["ux"]
+        },
+        {
+          "task_id": "TASK-018",
+          "task_name": "賞与月の重複防止警告",
+          "status": "completed",
+          "priority": "low",
+          "risk_level": "low",
+          "tags": ["ux"]
+        },
+        {
+          "task_id": "TASK-019",
+          "task_name": "住民税非表示の結果パネル表示改善",
+          "status": "completed",
+          "priority": "low",
+          "risk_level": "low",
+          "tags": ["ux"]
+        }
+      ],
       "modules": [
         { "module_id": "MOD-002", "module_name": "社会保険計算", "expected_completion": 1.0 },
         { "module_id": "MOD-003", "module_name": "所得税計算", "expected_completion": 1.0 },
+        { "module_id": "MOD-005", "module_name": "手当・賞与・控除管理", "expected_completion": 1.0 },
         { "module_id": "MOD-006", "module_name": "手取り結果表示", "expected_completion": 1.0 }
       ],
-      "assumptions": []
+      "assumptions": [
+        {
+          "assumption_id": "ASM-004",
+          "description": "乙欄は一律20.42%で計算（復興税込み）",
+          "status": "active",
+          "risk": "low"
+        },
+        {
+          "assumption_id": "ASM-005",
+          "description": "通勤手当の非課税上限は月額¥150,000",
+          "status": "active",
+          "risk": "low"
+        }
+      ]
     },
     {
       "iteration_id": "ITER-003",

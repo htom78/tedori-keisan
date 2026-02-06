@@ -174,7 +174,12 @@ function AllowanceList({ items, onUpdate, onRemove, onAdd, presets, usedNames })
 
       {items.map((item) => (
         <div key={item.id} style={styles.itemRow}>
-          <span style={styles.itemName}>{item.name}</span>
+          <span style={styles.itemName}>
+            {item.name}
+            {item.taxExempt && (
+              <span style={{ fontSize: 10, color: '#22c55e', marginLeft: 4 }}>非課税</span>
+            )}
+          </span>
           <NumericInput
             value={item.amount}
             onChange={(val) => onUpdate(item.id, 'amount', val)}
@@ -195,9 +200,14 @@ function AllowanceList({ items, onUpdate, onRemove, onAdd, presets, usedNames })
             <button
               key={p.id}
               style={styles.presetBtn}
-              onClick={() => onAdd({ name: p.name, amount: p.defaultAmount })}
+              onClick={() => onAdd({
+                name: p.name,
+                amount: p.defaultAmount,
+                ...(p.taxExempt ? { taxExempt: true } : {}),
+              })}
             >
               + {p.name}
+              {p.taxExempt && ' (非課税)'}
             </button>
           ))}
         </div>
@@ -207,10 +217,26 @@ function AllowanceList({ items, onUpdate, onRemove, onAdd, presets, usedNames })
 }
 
 function BonusList({ items, onUpdate, onRemove, onAdd }) {
+  const usedMonths = items.map((b) => b.month)
+  const hasDuplicates = usedMonths.length !== new Set(usedMonths).size
+
   return (
     <div>
       {items.length === 0 && (
         <div style={styles.emptyNote}>賞与月が設定されていません</div>
+      )}
+
+      {hasDuplicates && (
+        <div style={{
+          fontSize: 12,
+          color: '#f59e0b',
+          padding: '4px 8px',
+          background: 'rgba(245,158,11,0.1)',
+          borderRadius: 6,
+          marginBottom: 6,
+        }}>
+          同じ月が複数設定されています（最初のエントリのみ適用）
+        </div>
       )}
 
       {items.map((item) => (

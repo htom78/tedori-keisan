@@ -11,6 +11,10 @@ import {
   RESIDENT_TAX_RATE,
   SALARY_DEDUCTION_TABLE,
   SI_MODES,
+  NON_RESIDENT_TAX_RATE,
+  COMMUTE_TAX_FREE_LIMIT,
+  PENSION_BONUS_CAP,
+  EMPLOYMENT_INSURANCE_CAP,
 } from '../constants/taxData'
 
 // Look up standard remuneration from a table given a salary
@@ -98,7 +102,7 @@ export function calculateNursing(settings) {
 // Calculate employment insurance (employee share)
 export function calculateEmployment(settings) {
   const { salary, rate, totalEarnings } = settings
-  const base = totalEarnings || salary
+  const base = Math.min(totalEarnings || salary, EMPLOYMENT_INSURANCE_CAP)
   return Math.round(base * (rate / 100))
 }
 
@@ -120,18 +124,25 @@ export function calculateWithholdingTax(settings) {
     dependents = 0,
     isElectronic = false,
     isExempt = false,
+    isNonResident = false,
+    taxExemptAllowances = 0,
   } = settings
 
   if (isExempt) return 0
 
-  // Taxable salary = monthly salary - social insurance
-  const taxableBase = monthlySalary - socialInsuranceTotal
+  // Taxable salary = monthly salary - social insurance - tax-exempt allowances
+  const taxableBase = monthlySalary - socialInsuranceTotal - taxExemptAllowances
+
+  // Non-resident: flat 20.42% (乙欄)
+  if (isNonResident) {
+    return Math.round(Math.max(0, taxableBase) * (NON_RESIDENT_TAX_RATE / 100))
+  }
 
   // Dependent deduction: roughly ¥31,667/month per dependent (¥380,000/year / 12)
   const dependentDeduction = dependents * 31667
   const taxableSalary = Math.max(0, taxableBase - dependentDeduction)
 
-  // Look up withholding bracket
+  // Look up withholding bracket (甲欄)
   let tax = 0
   for (const bracket of WITHHOLDING_BRACKETS) {
     if (taxableSalary <= bracket.upper) {
@@ -140,10 +151,13 @@ export function calculateWithholdingTax(settings) {
     }
   }
 
-  // Electronic filing deduction (電子申告控除) - minor monthly reduction
+  // Electronic filing deduction (電子申告控除)
   if (isElectronic && tax > 0) {
     tax = Math.max(0, tax - Math.round(tax * 0.01))
   }
+
+  // Apply reconstruction special income tax (復興特別所得税 2.1%)
+  tax = Math.round(tax * (1 + RECONSTRUCTION_TAX_RATE / 100))
 
   return Math.round(tax)
 }
@@ -203,7 +217,10 @@ export function calculateTakeHome(settings) {
     deductions = [],
   } = settings
 
-  // Total allowances
+  // Separate taxable and tax-exempt allowances (TASK-013: commute allowance)
+  const taxExemptAllowances = allowances
+    .filter((a) => a.taxExempt)
+    .reduce((sum, a) => sum + Math.min(a.amount || 0, COMMUTE_TAX_FREE_LIMIT), 0)
   const totalAllowances = allowances.reduce((sum, a) => sum + (a.amount || 0), 0)
 
   // Bonus (if current month is a bonus month)
@@ -217,6 +234,7 @@ export function calculateTakeHome(settings) {
   // Social insurance calculations use base salary (not bonus for monthly)
   const siBaseSalary = salary + totalAllowances
 
+  // Monthly social insurance
   const healthInsurance = calculateHealthInsurance({
     mode: healthMode,
     salary: siBaseSalary,
@@ -248,9 +266,33 @@ export function calculateTakeHome(settings) {
     ? calculateEmployment({ salary: grossSalary, rate: employmentRate, totalEarnings: grossSalary })
     : 0
 
-  const socialInsuranceTotal = healthInsurance + pensionInsurance + nursingInsurance + employmentInsurance
+  // Bonus social insurance (TASK-014: bonus-specific SI)
+  let bonusHealthSI = 0
+  let bonusPensionSI = 0
+  let bonusNursingSI = 0
+  if (bonusAmount > 0 && healthMode !== SI_MODES.CUSTOM && pensionMode !== SI_MODES.CUSTOM) {
+    // Health: bonus × rate/2 (no standard remuneration table for bonuses)
+    const healthTotalRate = healthIsKyokai
+      ? (PREFECTURES[prefectureIndex] || PREFECTURES[12]).healthRate
+      : RATES.unionHealth
+    bonusHealthSI = Math.round(bonusAmount * (healthTotalRate / 100) / 2)
 
-  // Withholding tax
+    // Pension: bonus × rate/2, capped at ¥1.5M per occurrence
+    const cappedBonus = Math.min(bonusAmount, PENSION_BONUS_CAP)
+    bonusPensionSI = Math.round(cappedBonus * (RATES.pension / 100) / 2)
+
+    // Nursing: if collected
+    if (nursingIsCollected && !nursingUseCustom) {
+      bonusNursingSI = Math.round(bonusAmount * (RATES.nursing / 100) / 2)
+    }
+  }
+
+  const totalHealthInsurance = healthInsurance + bonusHealthSI
+  const totalPensionInsurance = pensionInsurance + bonusPensionSI
+  const totalNursingInsurance = nursingInsurance + bonusNursingSI
+  const socialInsuranceTotal = totalHealthInsurance + totalPensionInsurance + totalNursingInsurance + employmentInsurance
+
+  // Withholding tax (TASK-011: reconstruction tax, TASK-012: non-resident, TASK-013: tax-exempt)
   const withholdingTax = calculateWithholdingTax({
     monthlySalary: grossSalary,
     socialInsuranceTotal,
@@ -258,6 +300,7 @@ export function calculateTakeHome(settings) {
     isElectronic,
     isExempt: isTaxExempt,
     isNonResident,
+    taxExemptAllowances,
   })
 
   // Resident tax
@@ -288,9 +331,9 @@ export function calculateTakeHome(settings) {
     baseSalary: salary,
     totalAllowances,
     bonusAmount,
-    healthInsurance,
-    pensionInsurance,
-    nursingInsurance,
+    healthInsurance: totalHealthInsurance,
+    pensionInsurance: totalPensionInsurance,
+    nursingInsurance: totalNursingInsurance,
     employmentInsurance,
     socialInsuranceTotal,
     withholdingTax,
@@ -300,5 +343,6 @@ export function calculateTakeHome(settings) {
     takeHome,
     deductionRate,
     isBonusMonth,
+    taxExemptAllowances,
   }
 }

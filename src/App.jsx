@@ -275,7 +275,7 @@ export default function App() {
         </div>
 
         <div style={styles.rightCol}>
-          <ResultPanel result={result} isDesktop={isDesktop} />
+          <ResultPanel result={result} isDesktop={isDesktop} residentTaxHidden={residentTaxHidden} />
         </div>
       </div>
     </div>
