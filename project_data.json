@@ -1,0 +1,154 @@
+{
+  "project_name": "jpscalc3 - 手取り計算ツール",
+  "current_iteration": "ITER-002",
+  "iterations": [
+    {
+      "iteration_id": "ITER-001",
+      "iteration_name": "コア機能実装",
+      "status": "completed",
+      "start_date": "2026-02-06",
+      "end_date": "2026-02-06",
+      "tasks": [
+        {
+          "task_id": "TASK-001",
+          "task_name": "プロジェクト初期設定（Vite + React 18）",
+          "status": "completed",
+          "priority": "critical",
+          "risk_level": "low",
+          "tags": ["scaffolding"]
+        },
+        {
+          "task_id": "TASK-002",
+          "task_name": "税データ定数定義（47都道府県、標準報酬月額表）",
+          "status": "completed",
+          "priority": "critical",
+          "risk_level": "high",
+          "tags": ["data"]
+        },
+        {
+          "task_id": "TASK-003",
+          "task_name": "社会保険計算ロジック（健康・年金・介護・雇用）",
+          "status": "completed",
+          "priority": "critical",
+          "risk_level": "high",
+          "tags": ["calculation"]
+        },
+        {
+          "task_id": "TASK-004",
+          "task_name": "所得税・住民税計算ロジック",
+          "status": "completed",
+          "priority": "critical",
+          "risk_level": "high",
+          "tags": ["calculation"]
+        },
+        {
+          "task_id": "TASK-005",
+          "task_name": "基本情報入力UI（給与・月・都道府県・年齢）",
+          "status": "completed",
+          "priority": "high",
+          "risk_level": "low",
+          "tags": ["ui"]
+        },
+        {
+          "task_id": "TASK-006",
+          "task_name": "社会保険セクションUI（3モードタブ・4色カード）",
+          "status": "completed",
+          "priority": "high",
+          "risk_level": "low",
+          "tags": ["ui"]
+        },
+        {
+          "task_id": "TASK-007",
+          "task_name": "所得税・住民税セクションUI",
+          "status": "completed",
+          "priority": "high",
+          "risk_level": "low",
+          "tags": ["ui"]
+        },
+        {
+          "task_id": "TASK-008",
+          "task_name": "手当・賞与・控除管理UI（プリセット付き）",
+          "status": "completed",
+          "priority": "high",
+          "risk_level": "low",
+          "tags": ["ui"]
+        },
+        {
+          "task_id": "TASK-009",
+          "task_name": "結果パネル（手取り額・控除率・詳細展開）",
+          "status": "completed",
+          "priority": "high",
+          "risk_level": "low",
+          "tags": ["ui"]
+        },
+        {
+          "task_id": "TASK-010",
+          "task_name": "App組み立て（状態管理・レスポンシブ対応）",
+          "status": "completed",
+          "priority": "critical",
+          "risk_level": "low",
+          "tags": ["integration"]
+        }
+      ],
+      "modules": [
+        { "module_id": "MOD-001", "module_name": "基本情報入力", "expected_completion": 1.0 },
+        { "module_id": "MOD-002", "module_name": "社会保険計算", "expected_completion": 1.0 },
+        { "module_id": "MOD-003", "module_name": "所得税計算", "expected_completion": 1.0 },
+        { "module_id": "MOD-004", "module_name": "住民税計算", "expected_completion": 1.0 },
+        { "module_id": "MOD-005", "module_name": "手当・賞与・控除管理", "expected_completion": 1.0 },
+        { "module_id": "MOD-006", "module_name": "手取り結果表示", "expected_completion": 1.0 }
+      ],
+      "assumptions": [
+        {
+          "assumption_id": "ASM-001",
+          "description": "協会けんぽ料率は令和7年度データを使用",
+          "status": "active",
+          "risk": "high"
+        },
+        {
+          "assumption_id": "ASM-002",
+          "description": "介護保険料率は1.82%（令和7年度）",
+          "status": "active",
+          "risk": "medium"
+        },
+        {
+          "assumption_id": "ASM-003",
+          "description": "源泉徴収は簡易ブラケット近似で計算",
+          "status": "active",
+          "risk": "medium"
+        }
+      ]
+    },
+    {
+      "iteration_id": "ITER-002",
+      "iteration_name": "計算精度・UX改善",
+      "status": "in_progress",
+      "start_date": "2026-02-06",
+      "end_date": "2026-02-20",
+      "tasks": [],
+      "modules": [
+        { "module_id": "MOD-002", "module_name": "社会保険計算", "expected_completion": 1.0 },
+        { "module_id": "MOD-003", "module_name": "所得税計算", "expected_completion": 1.0 },
+        { "module_id": "MOD-006", "module_name": "手取り結果表示", "expected_completion": 1.0 }
+      ],
+      "assumptions": []
+    },
+    {
+      "iteration_id": "ITER-003",
+      "iteration_name": "テスト・パフォーマンス最適化",
+      "status": "planned",
+      "start_date": "2026-02-20",
+      "end_date": "2026-03-06",
+      "tasks": [],
+      "modules": [
+        { "module_id": "MOD-001", "module_name": "基本情報入力", "expected_completion": 1.0 },
+        { "module_id": "MOD-002", "module_name": "社会保険計算", "expected_completion": 1.0 },
+        { "module_id": "MOD-003", "module_name": "所得税計算", "expected_completion": 1.0 },
+        { "module_id": "MOD-004", "module_name": "住民税計算", "expected_completion": 1.0 },
+        { "module_id": "MOD-005", "module_name": "手当・賞与・控除管理", "expected_completion": 1.0 },
+        { "module_id": "MOD-006", "module_name": "手取り結果表示", "expected_completion": 1.0 }
+      ],
+      "assumptions": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "test_suites": [
+    {
+      "suite_name": "单元测试",
+      "total_tests": 0,
+      "passed_tests": 0,
+      "failed_tests": 0,
+      "skipped_tests": 0,
+      "coverage": 0.0,
+      "last_run": "2026-02-06 10:30:00"
+    },
+    {
+      "suite_name": "集成测试",
+      "total_tests": 0,
+      "passed_tests": 0,
+      "failed_tests": 0,
+      "skipped_tests": 0,
+      "coverage": 0.0,
+      "last_run": "2026-02-06 09:15:00"
+    },
+    {
+      "suite_name": "性能测试",
+      "total_tests": 0,
+      "passed_tests": 0,
+      "failed_tests": 0,
+      "skipped_tests": 0,
+      "coverage": 0.0,
+      "last_run": "2026-02-06 08:00:00"
+    }
+  ],
+  "tracing_points": [],
+  "anomalies": []
+}

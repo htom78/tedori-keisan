@@ -1,0 +1,61 @@
+{
+  "app_name": "Japanese Salary Calculator",
+  "version": "1.0.0",
+  "last_updated": "2026-02-06 14:00:00",
+  "modules": [
+    {
+      "module_id": "MOD-001",
+      "module_name": "基本情報入力",
+      "status": "stable",
+      "owner": "Claude",
+      "completion_rate": 1.0,
+      "last_update": "2026-02-06",
+      "notes": "給与入力、月選択、47都道府県選択、4年齢区分 実装済み"
+    },
+    {
+      "module_id": "MOD-002",
+      "module_name": "社会保険計算",
+      "status": "stable",
+      "owner": "Claude",
+      "completion_rate": 1.0,
+      "last_update": "2026-02-06",
+      "notes": "健康保険（3モード・協会けんぽ/健保組合）、厚生年金（3モード）、介護保険（年齢自動判定）、雇用保険（4カテゴリ）実装済み"
+    },
+    {
+      "module_id": "MOD-003",
+      "module_name": "所得税計算",
+      "status": "stable",
+      "owner": "Claude",
+      "completion_rate": 1.0,
+      "last_update": "2026-02-06",
+      "notes": "源泉徴収税（簡易ブラケット）、扶養控除、電子申告、非課税・非居住者対応 実装済み"
+    },
+    {
+      "module_id": "MOD-004",
+      "module_name": "住民税計算",
+      "status": "stable",
+      "owner": "Claude",
+      "completion_rate": 1.0,
+      "last_update": "2026-02-06",
+      "notes": "自動概算（所得割10%+均等割5000円）、手動入力、非表示切替 実装済み"
+    },
+    {
+      "module_id": "MOD-005",
+      "module_name": "手当・賞与・控除管理",
+      "status": "stable",
+      "owner": "Claude",
+      "completion_rate": 1.0,
+      "last_update": "2026-02-06",
+      "notes": "8プリセット手当、賞与月管理、11プリセット控除、CRUD操作 実装済み"
+    },
+    {
+      "module_id": "MOD-006",
+      "module_name": "手取り結果表示",
+      "status": "stable",
+      "owner": "Claude",
+      "completion_rate": 1.0,
+      "last_update": "2026-02-06",
+      "notes": "手取り額表示、控除率バッジ、詳細展開、スティッキーパネル、レスポンシブ対応 実装済み"
+    }
+  ]
+}
