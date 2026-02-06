@@ -24,32 +24,36 @@ const styles = {
   },
   header: {
     textAlign: 'center',
-    marginBottom: 32,
+    marginBottom: 48,
+    paddingTop: 16,
   },
   headerBadge: {
-    display: 'inline-block',
-    padding: '6px 16px',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 8,
+    padding: '10px 24px',
     borderRadius: 100,
     fontSize: 13,
     fontWeight: 600,
-    background: 'rgba(255, 107, 107, 0.1)',
-    color: '#ff6b6b',
-    border: '1px solid rgba(255, 107, 107, 0.3)',
-    marginBottom: 12,
-    letterSpacing: 0.5,
+    background: 'rgba(255,255,255,0.06)',
+    color: 'rgba(255,255,255,0.8)',
+    border: '1px solid rgba(255,255,255,0.12)',
+    marginBottom: 20,
+    letterSpacing: 2,
+    textTransform: 'uppercase',
   },
   headerTitle: {
-    fontSize: 32,
+    fontSize: 'clamp(40px, 6vw, 64px)',
     fontWeight: 800,
-    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text',
-    marginBottom: 6,
+    color: '#fff',
+    marginBottom: 16,
+    letterSpacing: '-0.02em',
+    lineHeight: 1.2,
   },
   headerSub: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.5)',
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.45)',
+    lineHeight: 1.6,
   },
   layout: (isDesktop) => ({
     display: isDesktop ? 'grid' : 'block',
@@ -205,11 +209,14 @@ export default function App() {
   return (
     <div style={styles.container}>
       <header style={styles.header}>
-        <div style={styles.headerBadge}>Salary Calculator</div>
+        <div style={styles.headerBadge}>
+          <span style={{ fontSize: 15 }}>&#128197;</span>
+          MONTHLY SALARY CALCULATOR
+        </div>
         <h1 style={styles.headerTitle}>手取り計算機</h1>
         <p style={styles.headerSub}>月給から税金・社会保険料を差し引いた実際の手取り額を瞬時に計算</p>
-        <p style={{ ...styles.headerSub, fontSize: 12, marginTop: 4, color: 'rgba(255,255,255,0.35)' }}>
-          賞与計算機能付き | 指定月の詳細計算
+        <p style={{ ...styles.headerSub, fontSize: 13, marginTop: 8, color: 'rgba(255,255,255,0.3)' }}>
+          賞与計算機能付き｜指定月の詳細計算
         </p>
       </header>
 
