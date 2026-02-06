@@ -10,8 +10,7 @@ import { calculateTakeHome } from './utils/calculator'
 import { useListManager } from './hooks/useListManager'
 import BasicInfoSection from './components/BasicInfoSection'
 import SocialInsuranceSection from './components/SocialInsuranceSection'
-import WithholdingTaxSection from './components/WithholdingTaxSection'
-import ResidentTaxSection from './components/ResidentTaxSection'
+import TaxSection from './components/TaxSection'
 import AllowanceBonusSection from './components/AllowanceBonusSection'
 import ResultPanel from './components/ResultPanel'
 
@@ -249,7 +248,7 @@ export default function App() {
             prefectureIndex={prefectureIndex}
           />
 
-          <WithholdingTaxSection
+          <TaxSection
             dependents={dependents}
             onDependentsChange={setDependents}
             isElectronic={isElectronic}
@@ -258,15 +257,12 @@ export default function App() {
             onTaxExemptChange={setIsTaxExempt}
             isNonResident={isNonResident}
             onNonResidentChange={setIsNonResident}
-          />
-
-          <ResidentTaxSection
-            mode={residentTaxMode}
-            onModeChange={setResidentTaxMode}
-            customAnnual={residentTaxCustomAnnual}
-            onCustomAnnualChange={setResidentTaxCustomAnnual}
-            hidden={residentTaxHidden}
-            onHiddenChange={setResidentTaxHidden}
+            residentTaxMode={residentTaxMode}
+            onResidentTaxModeChange={setResidentTaxMode}
+            residentTaxCustomAnnual={residentTaxCustomAnnual}
+            onResidentTaxCustomAnnualChange={setResidentTaxCustomAnnual}
+            residentTaxHidden={residentTaxHidden}
+            onResidentTaxHiddenChange={setResidentTaxHidden}
           />
 
           <AllowanceBonusSection

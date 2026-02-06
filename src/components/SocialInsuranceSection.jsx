@@ -15,17 +15,10 @@ const colors = {
   employment: '#f59e0b',
 }
 
-const subCardTints = {
-  '#22c55e': { bg: '#f0fdf4', border: '#bbf7d0' },
-  '#3b82f6': { bg: '#eff6ff', border: '#bfdbfe' },
-  '#a855f7': { bg: '#faf5ff', border: '#e9d5ff' },
-  '#f59e0b': { bg: '#fffbeb', border: '#fde68a' },
-}
-
 const styles = {
   card: {
-    background: '#ffffff',
-    border: '1px solid #e5e7eb',
+    background: '#1e1e1e',
+    border: '1px solid rgba(255,255,255,0.08)',
     borderRadius: 16,
     padding: 24,
     marginBottom: 16,
@@ -33,22 +26,19 @@ const styles = {
   title: {
     fontSize: 18,
     fontWeight: 700,
-    color: '#1a1a1a',
+    color: '#e2e8f0',
     marginBottom: 16,
     display: 'flex',
     alignItems: 'center',
     gap: 8,
   },
-  subCard: (color) => {
-    const tint = subCardTints[color] || { bg: '#f9fafb', border: '#e5e7eb' }
-    return {
-      background: tint.bg,
-      border: `1px solid ${tint.border}`,
-      borderRadius: 12,
-      padding: 16,
-      marginBottom: 12,
-    }
-  },
+  subCard: (color) => ({
+    background: `rgba(${hexToRgb(color)},0.06)`,
+    border: `1px solid rgba(${hexToRgb(color)},0.15)`,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+  }),
   subTitle: (color) => ({
     fontSize: 14,
     fontWeight: 600,
@@ -62,26 +52,25 @@ const styles = {
     display: 'flex',
     gap: 4,
     marginBottom: 10,
-    background: '#f3f4f6',
+    background: 'rgba(255,255,255,0.05)',
     borderRadius: 8,
     padding: 3,
   },
   tab: (active, color) => ({
     flex: 1,
     padding: '6px 8px',
-    background: active ? '#ffffff' : 'transparent',
-    border: active ? '1px solid #e5e7eb' : '1px solid transparent',
+    background: active ? `rgba(${hexToRgb(color)},0.15)` : 'transparent',
+    border: 'none',
     borderRadius: 6,
     color: active ? color : '#6b7280',
     fontSize: 12,
     cursor: 'pointer',
     fontWeight: active ? 600 : 400,
     transition: 'all 0.2s',
-    boxShadow: active ? '0 1px 2px rgba(0,0,0,0.05)' : 'none',
   }),
   label: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#9ca3af',
     marginBottom: 4,
     display: 'block',
   },
@@ -113,7 +102,7 @@ const styles = {
     alignItems: 'center',
     gap: 8,
     fontSize: 13,
-    color: '#374151',
+    color: '#cbd5e1',
     cursor: 'pointer',
     marginBottom: 8,
   },
@@ -130,10 +119,10 @@ const styles = {
   },
   categoryBtn: (active) => ({
     padding: '8px 6px',
-    background: active ? '#10b981' : '#f3f4f6',
-    border: active ? '1px solid #10b981' : '1px solid #e5e7eb',
+    background: active ? '#f59e0b' : '#2a2a2a',
+    border: active ? '1px solid #f59e0b' : '1px solid #3a3a3a',
     borderRadius: 8,
-    color: active ? '#ffffff' : '#6b7280',
+    color: active ? '#ffffff' : '#9ca3af',
     fontSize: 11,
     cursor: 'pointer',
     fontWeight: active ? 600 : 400,
@@ -142,7 +131,7 @@ const styles = {
   }),
   rateInfo: {
     fontSize: 11,
-    color: '#9ca3af',
+    color: '#6b7280',
     marginTop: 6,
   },
 }

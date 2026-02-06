@@ -3,8 +3,8 @@ import { formatNumber, parseNumericInput } from '../utils/format'
 
 const styles = {
   card: {
-    background: '#ffffff',
-    border: '1px solid #e5e7eb',
+    background: '#1e1e1e',
+    border: '1px solid rgba(255,255,255,0.08)',
     borderRadius: 16,
     padding: 24,
     marginBottom: 16,
@@ -12,7 +12,7 @@ const styles = {
   title: {
     fontSize: 18,
     fontWeight: 700,
-    color: '#1a1a1a',
+    color: '#e2e8f0',
     marginBottom: 16,
     display: 'flex',
     alignItems: 'center',
@@ -20,7 +20,7 @@ const styles = {
   },
   label: {
     fontSize: 13,
-    color: '#6b7280',
+    color: '#9ca3af',
     marginBottom: 6,
     display: 'block',
   },
@@ -60,10 +60,10 @@ const styles = {
   },
   ageBtn: (active) => ({
     padding: '8px 4px',
-    background: active ? '#10b981' : '#f3f4f6',
-    border: active ? '1px solid #10b981' : '1px solid #e5e7eb',
+    background: active ? '#f87171' : '#2a2a2a',
+    border: active ? '1px solid #f87171' : '1px solid #3a3a3a',
     borderRadius: 8,
-    color: active ? '#ffffff' : '#6b7280',
+    color: active ? '#ffffff' : '#9ca3af',
     fontSize: 12,
     cursor: 'pointer',
     transition: 'all 0.2s',
@@ -112,7 +112,7 @@ export default function BasicInfoSection({
   return (
     <div style={styles.card}>
       <div style={styles.title}>
-        <span style={{ color: '#10b981' }}>&#9679;</span>
+        <span style={{ color: '#f87171' }}>&#9679;</span>
         基本情報
       </div>
 
