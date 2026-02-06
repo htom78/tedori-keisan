@@ -219,7 +219,7 @@ export const MONTHS = Array.from({ length: 12 }, (_, i) => ({
 
 // Preset allowances
 export const PRESET_ALLOWANCES = [
-  { id: 'commute', name: '通勤手当', defaultAmount: 15000, taxExempt: true },
+  { id: 'commute', name: '通勤手当', defaultAmount: 15000, taxExempt: true, siExempt: true },
   { id: 'housing', name: '住宅手当', defaultAmount: 20000 },
   { id: 'family', name: '家族手当', defaultAmount: 15000 },
   { id: 'overtime', name: '残業手当', defaultAmount: 30000 },

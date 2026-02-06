@@ -201,6 +201,7 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
     deductionRate,
     isBonusMonth,
     taxExemptAllowances = 0,
+    siExemptAllowances = 0,
   } = result
 
   return (
@@ -312,6 +313,16 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
               </span>
               <span style={{ color: '#22c55e', fontFamily: mono, fontWeight: 600, fontSize: 14 }}>
                 {formatCurrency(taxExemptAllowances)}
+              </span>
+            </div>
+          )}
+          {siExemptAllowances > 0 && (
+            <div style={styles.detailRow}>
+              <span style={{ ...styles.detailLabel, color: '#3b82f6' }}>
+                うち社保除外手当
+              </span>
+              <span style={{ color: '#3b82f6', fontFamily: mono, fontWeight: 600, fontSize: 14 }}>
+                {formatCurrency(siExemptAllowances)}
               </span>
             </div>
           )}

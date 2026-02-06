@@ -191,7 +191,37 @@ function AllowanceList({ items, onUpdate, onRemove, onAdd, presets, usedNames })
             {item.taxExempt && (
               <span style={{ fontSize: 11, color: '#22c55e', marginLeft: 6 }}>非課税</span>
             )}
+            {item.siExempt && (
+              <span style={{ fontSize: 11, color: '#3b82f6', marginLeft: 6 }}>社保除外</span>
+            )}
           </span>
+          <button
+            style={{
+              padding: '4px 8px',
+              fontSize: 11,
+              fontWeight: 600,
+              border: '1px solid',
+              borderRadius: 6,
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              whiteSpace: 'nowrap',
+              ...(item.siExempt
+                ? {
+                    background: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: 'rgba(59, 130, 246, 0.5)',
+                    color: '#3b82f6',
+                  }
+                : {
+                    background: 'rgba(255,255,255,0.03)',
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    color: 'rgba(255,255,255,0.4)',
+                  }),
+            }}
+            onClick={() => onUpdate(item.id, 'siExempt', !item.siExempt)}
+            title="社会保険料計算から除く"
+          >
+            社保除外
+          </button>
           <NumericInput
             value={item.amount}
             onChange={(val) => onUpdate(item.id, 'amount', val)}
@@ -216,10 +246,12 @@ function AllowanceList({ items, onUpdate, onRemove, onAdd, presets, usedNames })
                 name: p.name,
                 amount: p.defaultAmount,
                 ...(p.taxExempt ? { taxExempt: true } : {}),
+                ...(p.siExempt ? { siExempt: true } : {}),
               })}
             >
               + {p.name}
               {p.taxExempt && ' (非課税)'}
+              {p.siExempt && ' (社保除外)'}
             </button>
           ))}
         </div>

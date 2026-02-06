@@ -223,6 +223,11 @@ export function calculateTakeHome(settings) {
     .reduce((sum, a) => sum + Math.min(a.amount || 0, COMMUTE_TAX_FREE_LIMIT), 0)
   const totalAllowances = allowances.reduce((sum, a) => sum + (a.amount || 0), 0)
 
+  // SI-exempt allowances (excluded from 標準報酬月額 calculation)
+  const siExemptAllowances = allowances
+    .filter((a) => a.siExempt)
+    .reduce((sum, a) => sum + (a.amount || 0), 0)
+
   // Bonus (if current month is a bonus month)
   const isBonusMonth = bonusMonths.some((b) => b.month === month && b.enabled)
   const bonusEntry = bonusMonths.find((b) => b.month === month && b.enabled)
@@ -231,8 +236,8 @@ export function calculateTakeHome(settings) {
   // Gross = base salary + allowances + bonus
   const grossSalary = salary + totalAllowances + bonusAmount
 
-  // Social insurance calculations use base salary (not bonus for monthly)
-  const siBaseSalary = salary + totalAllowances
+  // Social insurance calculations use base salary minus SI-exempt allowances
+  const siBaseSalary = salary + totalAllowances - siExemptAllowances
 
   // Monthly social insurance
   const healthInsurance = calculateHealthInsurance({
@@ -344,5 +349,6 @@ export function calculateTakeHome(settings) {
     deductionRate,
     isBonusMonth,
     taxExemptAllowances,
+    siExemptAllowances,
   }
 }
