@@ -1,6 +1,6 @@
 {
   "project_name": "jpscalc3 - 手取り計算ツール",
-  "current_iteration": "ITER-003",
+  "current_iteration": "ITER-004",
   "iterations": [
     {
       "iteration_id": "ITER-001",
@@ -222,11 +222,106 @@
     },
     {
       "iteration_id": "ITER-003",
-      "iteration_name": "テスト・パフォーマンス最適化",
-      "status": "planned",
-      "start_date": "2026-02-20",
-      "end_date": "2026-03-06",
-      "tasks": [],
+      "iteration_name": "機能拡張・デザイン・デプロイ",
+      "status": "completed",
+      "start_date": "2026-02-06",
+      "end_date": "2026-02-06",
+      "tasks": [
+        {
+          "task_id": "TASK-020",
+          "task_name": "社保除外フラグ（siExempt）の追加",
+          "status": "completed",
+          "priority": "high",
+          "risk_level": "high",
+          "tags": ["calculation", "ui"]
+        },
+        {
+          "task_id": "TASK-021",
+          "task_name": "ヘッダーデザインのリファレンス準拠リスタイル",
+          "status": "completed",
+          "priority": "medium",
+          "risk_level": "low",
+          "tags": ["ui"]
+        },
+        {
+          "task_id": "TASK-022",
+          "task_name": "GitHub Pages デプロイ（GitHub Actions CI/CD）",
+          "status": "completed",
+          "priority": "high",
+          "risk_level": "low",
+          "tags": ["devops"]
+        }
+      ],
+      "modules": [
+        { "module_id": "MOD-002", "module_name": "社会保険計算", "expected_completion": 1.0 },
+        { "module_id": "MOD-005", "module_name": "手当・賞与・控除管理", "expected_completion": 1.0 },
+        { "module_id": "MOD-006", "module_name": "手取り結果表示", "expected_completion": 1.0 }
+      ],
+      "assumptions": [
+        {
+          "assumption_id": "ASM-006",
+          "description": "通勤手当の社保除外はユーザー手動トグルで制御（法律上は標準報酬月額に含まれる）",
+          "status": "active",
+          "risk": "medium"
+        }
+      ]
+    },
+    {
+      "iteration_id": "ITER-004",
+      "iteration_name": "テスト・品質・仕上げ",
+      "status": "completed",
+      "start_date": "2026-02-06",
+      "end_date": "2026-02-06",
+      "tasks": [
+        {
+          "task_id": "TASK-023",
+          "task_name": "免責事項フッター追加",
+          "status": "completed",
+          "priority": "high",
+          "risk_level": "low",
+          "tags": ["ui"]
+        },
+        {
+          "task_id": "TASK-024",
+          "task_name": "Vitest テスト基盤セットアップ",
+          "status": "completed",
+          "priority": "high",
+          "risk_level": "low",
+          "tags": ["test"]
+        },
+        {
+          "task_id": "TASK-025",
+          "task_name": "calculator.js 単体テスト",
+          "status": "completed",
+          "priority": "critical",
+          "risk_level": "low",
+          "tags": ["test"]
+        },
+        {
+          "task_id": "TASK-026",
+          "task_name": "format.js / useListManager テスト",
+          "status": "completed",
+          "priority": "medium",
+          "risk_level": "low",
+          "tags": ["test"]
+        },
+        {
+          "task_id": "TASK-027",
+          "task_name": "SEO メタタグ・OGP 設定",
+          "status": "completed",
+          "priority": "medium",
+          "risk_level": "low",
+          "tags": ["seo"]
+        },
+        {
+          "task_id": "TASK-028",
+          "task_name": "Lighthouse パフォーマンス監査・改善",
+          "status": "completed",
+          "priority": "low",
+          "risk_level": "low",
+          "tags": ["perf"]
+        }
+      ],
       "modules": [
         { "module_id": "MOD-001", "module_name": "基本情報入力", "expected_completion": 1.0 },
         { "module_id": "MOD-002", "module_name": "社会保険計算", "expected_completion": 1.0 },

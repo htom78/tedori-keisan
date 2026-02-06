@@ -55,6 +55,17 @@ const styles = {
     color: 'rgba(255,255,255,0.45)',
     lineHeight: 1.6,
   },
+  footer: {
+    textAlign: 'center',
+    marginTop: 48,
+    padding: '28px 24px',
+    background: 'rgba(255,255,255,0.03)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: 16,
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.35)',
+    lineHeight: 1.8,
+  },
   layout: (isDesktop) => ({
     display: isDesktop ? 'grid' : 'block',
     gridTemplateColumns: isDesktop ? '1fr 380px' : undefined,
@@ -298,6 +309,11 @@ export default function App() {
           <ResultPanel result={result} isDesktop={isDesktop} residentTaxHidden={residentTaxHidden} />
         </div>
       </div>
+
+      <footer style={styles.footer}>
+        <p>※ この計算は概算です。月額計算は簡易的な計算方法を使用しています。</p>
+        <p>実際の手取り額は、個人の状況により異なります。詳細は税務署または社会保険労務士にご相談ください。</p>
+      </footer>
     </div>
   )
 }

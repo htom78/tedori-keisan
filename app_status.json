@@ -1,7 +1,7 @@
 {
   "app_name": "Japanese Salary Calculator",
   "version": "1.0.0",
-  "last_updated": "2026-02-06 14:00:00",
+  "last_updated": "2026-02-06 18:00:00",
   "modules": [
     {
       "module_id": "MOD-001",
@@ -19,7 +19,7 @@
       "owner": "Claude",
       "completion_rate": 1.0,
       "last_update": "2026-02-06",
-      "notes": "健康保険（3モード・協会けんぽ/健保組合）、厚生年金（3モード）、介護保険（年齢自動判定）、雇用保険（4カテゴリ）実装済み"
+      "notes": "健康保険（3モード・協会けんぽ/健保組合）、厚生年金（3モード）、介護保険（年齢自動判定）、雇用保険（4カテゴリ）、社保除外手当対応 実装済み"
     },
     {
       "module_id": "MOD-003",
@@ -46,7 +46,7 @@
       "owner": "Claude",
       "completion_rate": 1.0,
       "last_update": "2026-02-06",
-      "notes": "8プリセット手当、賞与月管理、11プリセット控除、CRUD操作 実装済み"
+      "notes": "8プリセット手当（社保除外トグル付き）、賞与月管理、11プリセット控除、CRUD操作 実装済み"
     },
     {
       "module_id": "MOD-006",
