@@ -1,4 +1,4 @@
-import { Minus, Plus, Eye, EyeOff } from 'lucide-react'
+import { Minus, Plus, Eye, EyeOff, ShieldCheck } from 'lucide-react'
 import { formatNumber, parseNumericInput } from '../utils/format'
 
 const colors = {
@@ -31,26 +31,26 @@ const styles = {
     gap: 8,
   },
   subCard: (color) => ({
-    background: `rgba(${hexToRgb(color)},0.06)`,
-    border: `1px solid rgba(${hexToRgb(color)},0.15)`,
-    borderRadius: 12,
-    padding: 16,
+    background: `rgba(${hexToRgb(color)},0.08)`,
+    border: `1px solid rgba(${hexToRgb(color)},0.2)`,
+    borderRadius: 16,
+    padding: 20,
     marginBottom: 12,
   }),
   subTitle: (color) => ({
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: 600,
     color,
-    marginBottom: 10,
+    marginBottom: 14,
     display: 'flex',
     alignItems: 'center',
-    gap: 6,
+    gap: 8,
   }),
   subTitleRow: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: 14,
   },
   label: {
     fontSize: 12,
@@ -60,86 +60,66 @@ const styles = {
   },
   input: {
     width: '100%',
-    padding: '8px 10px',
+    padding: '12px 14px',
     background: '#2a2a2a',
     border: '1px solid #3a3a3a',
-    borderRadius: 6,
+    borderRadius: 10,
     color: '#e2e8f0',
     fontSize: 14,
     outline: 'none',
     textAlign: 'right',
   },
-  stepper: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    marginBottom: 12,
-  },
-  stepperBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
+  displayBox: {
+    width: '100%',
+    padding: '14px 16px',
     background: '#2a2a2a',
     border: '1px solid #3a3a3a',
-    color: '#e2e8f0',
+    borderRadius: 12,
+    color: '#9ca3af',
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 12,
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    transition: 'all 0.2s',
-  },
-  stepperValue: {
-    fontSize: 22,
-    fontWeight: 700,
-    color: '#e2e8f0',
-    minWidth: 36,
-    textAlign: 'center',
-  },
-  stepperLabel: {
-    fontSize: 13,
-    color: '#9ca3af',
-    marginLeft: 4,
-  },
-  checkbox: {
-    display: 'flex',
-    alignItems: 'center',
     gap: 8,
-    fontSize: 13,
-    color: '#cbd5e1',
-    cursor: 'pointer',
+  },
+  toggleRow: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 1fr',
+    gap: 8,
     marginBottom: 8,
   },
-  checkboxInput: {
-    width: 16,
-    height: 16,
-    accentColor: '#10b981',
+  toggleBtn: (active) => ({
+    padding: '12px 8px',
+    background: active ? 'rgba(239,68,68,0.15)' : '#2a2a2a',
+    border: active ? '1px solid rgba(239,68,68,0.3)' : '1px solid #3a3a3a',
+    borderRadius: 10,
+    color: active ? '#f87171' : '#9ca3af',
+    fontSize: 13,
     cursor: 'pointer',
-  },
-  description: {
-    fontSize: 11,
-    color: '#6b7280',
-    marginTop: 4,
-    paddingLeft: 24,
-  },
+    fontWeight: active ? 600 : 400,
+    transition: 'all 0.2s',
+    textAlign: 'center',
+  }),
   tabs: {
     display: 'flex',
-    gap: 4,
-    marginBottom: 10,
-    background: 'rgba(255,255,255,0.05)',
-    borderRadius: 8,
-    padding: 3,
+    gap: 6,
+    marginBottom: 12,
   },
   tab: (active, color) => ({
     flex: 1,
-    padding: '6px 8px',
-    background: active ? `rgba(${hexToRgb(color)},0.15)` : 'transparent',
-    border: 'none',
-    borderRadius: 6,
-    color: active ? color : '#6b7280',
+    padding: '10px 8px',
+    background: active ? `rgba(${hexToRgb(color)},0.15)` : '#2a2a2a',
+    border: active ? `1px solid rgba(${hexToRgb(color)},0.3)` : '1px solid #3a3a3a',
+    borderRadius: 10,
+    color: active ? color : '#9ca3af',
     fontSize: 12,
     cursor: 'pointer',
     fontWeight: active ? 600 : 400,
     transition: 'all 0.2s',
+    textAlign: 'center',
   }),
   visibilityBtn: {
     background: 'none',
@@ -160,7 +140,7 @@ const styles = {
     fontSize: 13,
     color: '#6b7280',
     textAlign: 'center',
-    padding: '12px 0',
+    padding: '14px 0',
     fontStyle: 'italic',
   },
 }
@@ -175,62 +155,59 @@ function WithholdingCard({
   isNonResident,
   onNonResidentChange,
 }) {
+  const dependentLabel = dependents === 0
+    ? '扶養家族なし'
+    : `扶養家族 ${dependents}人`
+
   return (
     <div style={styles.subCard(colors.withholding)}>
       <div style={styles.subTitle(colors.withholding)}>
-        <span>&#128203;</span> 所得税（源泉徴収）
+        <ShieldCheck size={16} /> 源泉所得税設定
       </div>
 
-      <label style={styles.label}>扶養親族等の数</label>
-      <div style={styles.stepper}>
-        <button
-          style={styles.stepperBtn}
-          onClick={() => onDependentsChange(Math.max(0, dependents - 1))}
-        >
-          <Minus size={14} />
-        </button>
-        <span style={styles.stepperValue}>{dependents}</span>
-        <button
-          style={styles.stepperBtn}
-          onClick={() => onDependentsChange(dependents + 1)}
-        >
-          <Plus size={14} />
-        </button>
-        <span style={styles.stepperLabel}>人</span>
+      <div
+        style={styles.displayBox}
+        onClick={() => onDependentsChange(dependents === 0 ? 1 : 0)}
+      >
+        <Minus
+          size={14}
+          style={{ cursor: 'pointer', color: '#6b7280' }}
+          onClick={(e) => {
+            e.stopPropagation()
+            onDependentsChange(Math.max(0, dependents - 1))
+          }}
+        />
+        <span>{dependentLabel}</span>
+        <Plus
+          size={14}
+          style={{ cursor: 'pointer', color: '#6b7280' }}
+          onClick={(e) => {
+            e.stopPropagation()
+            onDependentsChange(dependents + 1)
+          }}
+        />
       </div>
 
-      <label style={styles.checkbox}>
-        <input
-          type="checkbox"
-          style={styles.checkboxInput}
-          checked={isElectronic}
-          onChange={(e) => onElectronicChange(e.target.checked)}
-        />
-        電子申告利用
-      </label>
-      <div style={styles.description}>e-Taxによる確定申告を行う場合</div>
-
-      <label style={{ ...styles.checkbox, marginTop: 8 }}>
-        <input
-          type="checkbox"
-          style={styles.checkboxInput}
-          checked={isTaxExempt}
-          onChange={(e) => onTaxExemptChange(e.target.checked)}
-        />
-        所得税非課税
-      </label>
-      <div style={styles.description}>月額88,000円未満等で非課税の場合</div>
-
-      <label style={{ ...styles.checkbox, marginTop: 8 }}>
-        <input
-          type="checkbox"
-          style={styles.checkboxInput}
-          checked={isNonResident}
-          onChange={(e) => onNonResidentChange(e.target.checked)}
-        />
-        非居住者（乙欄適用）
-      </label>
-      <div style={styles.description}>甲欄ではなく乙欄の税率を適用</div>
+      <div style={styles.toggleRow}>
+        <button
+          style={styles.toggleBtn(isElectronic)}
+          onClick={() => onElectronicChange(!isElectronic)}
+        >
+          電算
+        </button>
+        <button
+          style={styles.toggleBtn(isTaxExempt)}
+          onClick={() => onTaxExemptChange(!isTaxExempt)}
+        >
+          免除
+        </button>
+        <button
+          style={styles.toggleBtn(isNonResident)}
+          onClick={() => onNonResidentChange(!isNonResident)}
+        >
+          非居住
+        </button>
+      </div>
     </div>
   )
 }
