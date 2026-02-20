@@ -28,9 +28,9 @@ const defaultSettings = {
   employmentRate: 0.55,
   employmentJoined: true,
   dependents: 0,
-  isElectronic: false,
   isTaxExempt: false,
   isNonResident: false,
+  taxColumn: 'kou',
   residentTaxMode: 'auto',
   residentTaxCustomAnnual: 0,
   residentTaxHidden: false,
@@ -74,8 +74,21 @@ describe('calculateHealthInsurance', () => {
       customAmount: 0,
       standardGrade: null,
     })
-    // Union rate = 9.50%
+    // Default union rate = 9.50%
     expect(result).toBe(Math.round(300000 * (9.50 / 100) / 2))
+  })
+
+  it('uses custom union rate when provided', () => {
+    const result = calculateHealthInsurance({
+      mode: 'auto',
+      salary: 300000,
+      prefectureIndex: 12,
+      isKyokai: false,
+      customAmount: 0,
+      standardGrade: null,
+      healthUnionRate: 8.50,
+    })
+    expect(result).toBe(Math.round(300000 * (8.50 / 100) / 2))
   })
 
   it('uses standard grade when specified', () => {
@@ -133,7 +146,7 @@ describe('calculateNursing', () => {
     expect(result).toBe(0)
   })
 
-  it('calculates nursing insurance when collected', () => {
+  it('calculates nursing insurance when collected (Reiwa 8 rate 1.59%)', () => {
     const result = calculateNursing({
       isCollected: true,
       useCustom: false,
@@ -143,8 +156,20 @@ describe('calculateNursing', () => {
       healthMode: 'auto',
       healthStandardGrade: null,
     })
-    // Nursing rate = 1.82%, employee = half, standard = ¥300,000
-    expect(result).toBe(Math.round(300000 * (1.82 / 100) / 2))
+    // Nursing rate = 1.59%, employee = half, standard = ¥300,000
+    expect(result).toBe(Math.round(300000 * (1.59 / 100) / 2))
+  })
+
+  it('uses custom nursing union rate when provided', () => {
+    const result = calculateNursing({
+      isCollected: true,
+      useCustom: false,
+      salary: 300000,
+      healthMode: 'auto',
+      healthStandardGrade: null,
+      nursingUnionRate: 1.20,
+    })
+    expect(result).toBe(Math.round(300000 * (1.20 / 100) / 2))
   })
 
   it('returns custom amount when useCustom is true', () => {
@@ -159,22 +184,44 @@ describe('calculateNursing', () => {
 })
 
 describe('calculateEmployment', () => {
-  it('calculates general rate (0.55%)', () => {
+  it('calculates general rate (0.55%) with Math.floor', () => {
     const result = calculateEmployment({
       salary: 300000,
       rate: 0.55,
       totalEarnings: 300000,
     })
-    expect(result).toBe(Math.round(300000 * 0.0055))
+    // Math.floor(300000 * 0.0055) = Math.floor(1650) = 1650
+    expect(result).toBe(Math.floor(300000 * 0.0055))
   })
 
-  it('caps at ¥1,620,000', () => {
+  it('uses Math.floor rounding (not Math.round)', () => {
+    // Pick a salary that produces a fractional result
+    const result = calculateEmployment({
+      salary: 333333,
+      rate: 0.55,
+      totalEarnings: 333333,
+    })
+    // Math.floor(333333 * 0.0055) = Math.floor(1833.3315) = 1833
+    expect(result).toBe(1833)
+    // Not Math.round which would give 1833 too in this case
+    // But verify the floor behavior with another value
+    const result2 = calculateEmployment({
+      salary: 272727,
+      rate: 0.55,
+      totalEarnings: 272727,
+    })
+    // Math.floor(272727 * 0.0055) = Math.floor(1499.9985) = 1499
+    expect(result2).toBe(1499)
+  })
+
+  it('has no monthly cap (unlike previous implementation)', () => {
     const result = calculateEmployment({
       salary: 2000000,
       rate: 0.55,
       totalEarnings: 2000000,
     })
-    expect(result).toBe(Math.round(1620000 * 0.0055))
+    // No cap, should be floor(2000000 * 0.0055) = 11000
+    expect(result).toBe(Math.floor(2000000 * 0.0055))
   })
 })
 
@@ -188,14 +235,15 @@ describe('calculateWithholdingTax', () => {
     expect(result).toBe(0)
   })
 
-  it('calculates non-resident flat rate (20.42%)', () => {
+  it('calculates non-resident flat rate (20.42%) with Math.floor', () => {
     const result = calculateWithholdingTax({
       monthlySalary: 300000,
       socialInsuranceTotal: 40000,
       isNonResident: true,
     })
     const taxableBase = 300000 - 40000
-    expect(result).toBe(Math.round(taxableBase * 0.2042))
+    // Math.floor(260000 * 0.2042) = Math.floor(53092) = 53092
+    expect(result).toBe(Math.floor(taxableBase * 0.2042))
   })
 
   it('deducts tax-exempt allowances from taxable base', () => {
@@ -212,7 +260,7 @@ describe('calculateWithholdingTax', () => {
     expect(withExempt).toBeLessThan(withoutExempt)
   })
 
-  it('reduces tax for dependents', () => {
+  it('reduces tax for dependents (甲欄)', () => {
     const noDeps = calculateWithholdingTax({
       monthlySalary: 300000,
       socialInsuranceTotal: 40000,
@@ -226,12 +274,104 @@ describe('calculateWithholdingTax', () => {
     expect(withDeps).toBeLessThan(noDeps)
   })
 
-  it('returns 0 for salary below ¥88,000 threshold', () => {
+  it('returns 0 for very low salary (below deduction threshold)', () => {
     const result = calculateWithholdingTax({
       monthlySalary: 80000,
       socialInsuranceTotal: 0,
     })
+    // After salary deduction and basic deduction, taxable should be <= 0
     expect(result).toBe(0)
+  })
+
+  describe('電算機特例 (electronic formula)', () => {
+    it('calculates correctly for ¥300,000 salary, ¥43,965 SI, 0 dependents', () => {
+      const result = calculateWithholdingTax({
+        monthlySalary: 300000,
+        socialInsuranceTotal: 43965,
+        dependents: 0,
+        taxColumn: 'kou',
+      })
+      // afterSi = 256035
+      // salaryDeduction: floor(256035 * 0.3) + 6667 = 76810 + 6667 = 83477
+      // employmentIncome = 256035 - 83477 = 172558
+      // basicDeduction = 40000 (< 2162499)
+      // taxable = 172558 - 40000 = 132558
+      // tax = floor(132558 * 0.05105 - 0) = floor(6767.08) = 6767
+      // rounded = round(6767 / 10) * 10 = 6770
+      expect(result).toBe(6770)
+    })
+
+    it('calculates correctly for ¥500,000 salary, ¥70,000 SI, 2 dependents', () => {
+      const result = calculateWithholdingTax({
+        monthlySalary: 500000,
+        socialInsuranceTotal: 70000,
+        dependents: 2,
+        taxColumn: 'kou',
+      })
+      // afterSi = 430000
+      // salaryDeduction: floor(430000 * 0.2) + 36667 = 86000 + 36667 = 122667
+      // employmentIncome = 430000 - 122667 = 307333
+      // basicDeduction = 40000
+      // dependentDeduction = 2 * 31667 = 63334
+      // taxable = 307333 - 40000 - 63334 = 203999
+      // bracket: 203999 <= 275000, rate 0.10210, deduction 8296
+      // tax = floor(203999 * 0.10210 - 8296) = floor(20828.5 - 8296) = floor(12532.5) = 12532
+      // rounded = round(12532 / 10) * 10 = 12530
+      expect(result).toBe(12530)
+    })
+
+    it('returns rounded to nearest 10 yen', () => {
+      const result = calculateWithholdingTax({
+        monthlySalary: 300000,
+        socialInsuranceTotal: 43965,
+        dependents: 0,
+        taxColumn: 'kou',
+      })
+      expect(result % 10).toBe(0)
+    })
+  })
+
+  describe('乙欄 (secondary employment)', () => {
+    it('calculates higher tax than 甲欄 for same salary', () => {
+      const kou = calculateWithholdingTax({
+        monthlySalary: 300000,
+        socialInsuranceTotal: 40000,
+        dependents: 0,
+        taxColumn: 'kou',
+      })
+      const otsu = calculateWithholdingTax({
+        monthlySalary: 300000,
+        socialInsuranceTotal: 40000,
+        dependents: 0,
+        taxColumn: 'otsu',
+      })
+      expect(otsu).toBeGreaterThan(kou)
+    })
+
+    it('ignores dependents (always same tax regardless)', () => {
+      const noDeps = calculateWithholdingTax({
+        monthlySalary: 300000,
+        socialInsuranceTotal: 40000,
+        dependents: 0,
+        taxColumn: 'otsu',
+      })
+      const withDeps = calculateWithholdingTax({
+        monthlySalary: 300000,
+        socialInsuranceTotal: 40000,
+        dependents: 3,
+        taxColumn: 'otsu',
+      })
+      expect(noDeps).toBe(withDeps)
+    })
+
+    it('returns rounded to nearest 10 yen', () => {
+      const result = calculateWithholdingTax({
+        monthlySalary: 300000,
+        socialInsuranceTotal: 40000,
+        taxColumn: 'otsu',
+      })
+      expect(result % 10).toBe(0)
+    })
   })
 })
 
@@ -300,11 +440,8 @@ describe('calculateTakeHome', () => {
       ...defaultSettings,
       allowances: [{ id: '1', name: 'commute', amount: 15000, siExempt: true }],
     })
-    // Gross should be the same
     expect(withSiExempt.grossSalary).toBe(base.grossSalary)
-    // SI should be lower (or equal if same grade boundary)
     expect(withSiExempt.socialInsuranceTotal).toBeLessThanOrEqual(base.socialInsuranceTotal)
-    // siExemptAllowances tracked
     expect(withSiExempt.siExemptAllowances).toBe(15000)
     expect(base.siExemptAllowances).toBe(0)
   })
@@ -372,5 +509,55 @@ describe('calculateTakeHome', () => {
       residentTaxHidden: true,
     })
     expect(result.residentTax).toBe(0)
+  })
+
+  it('passes healthUnionRate and nursingUnionRate through', () => {
+    const withUnionRates = calculateTakeHome({
+      ...defaultSettings,
+      healthIsKyokai: false,
+      healthUnionRate: 8.00,
+      nursingIsCollected: true,
+      nursingUnionRate: 1.20,
+    })
+    // Health: 300000 * 8.00% / 2 = 12000
+    expect(withUnionRates.healthInsurance).toBe(12000)
+    // Nursing: 300000 * 1.20% / 2 = 1800
+    expect(withUnionRates.nursingInsurance).toBe(1800)
+  })
+
+  it('uses 乙欄 when taxColumn is otsu', () => {
+    const kouResult = calculateTakeHome({
+      ...defaultSettings,
+      taxColumn: 'kou',
+    })
+    const otsuResult = calculateTakeHome({
+      ...defaultSettings,
+      taxColumn: 'otsu',
+    })
+    expect(otsuResult.withholdingTax).toBeGreaterThan(kouResult.withholdingTax)
+  })
+
+  describe('cross-verification: ¥300,000 Tokyo under40 0 dependents', () => {
+    it('matches expected breakdown', () => {
+      const result = calculateTakeHome(defaultSettings)
+
+      // Health: standard ¥300,000 × 9.91% / 2 = 14,865
+      expect(result.healthInsurance).toBe(14865)
+
+      // Pension: standard ¥300,000 × 18.3% / 2 = 27,450
+      expect(result.pensionInsurance).toBe(27450)
+
+      // Nursing: 0 (under 40)
+      expect(result.nursingInsurance).toBe(0)
+
+      // Employment: floor(300000 * 0.0055) = 1650
+      expect(result.employmentInsurance).toBe(1650)
+
+      // Total SI: 14865 + 27450 + 0 + 1650 = 43965
+      expect(result.socialInsuranceTotal).toBe(43965)
+
+      // Withholding: 電算機特例 = 6770 (verified in withholding test)
+      expect(result.withholdingTax).toBe(6770)
+    })
   })
 })

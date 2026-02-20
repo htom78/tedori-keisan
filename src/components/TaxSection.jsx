@@ -92,9 +92,33 @@ const styles = {
     gap: 10,
     transition: 'all 0.3s ease',
   },
+  columnRow: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: 10,
+    marginBottom: 12,
+  },
+  columnBtn: (active, color) => ({
+    padding: '14px 10px',
+    background: active
+      ? `linear-gradient(135deg, ${color} 0%, ${color}dd 100%)`
+      : 'rgba(255,255,255,0.05)',
+    border: active
+      ? `2px solid rgba(${hexToRgb(color)},0.5)`
+      : '2px solid rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    color: active ? '#000' : '#fff',
+    fontSize: 13,
+    cursor: 'pointer',
+    fontWeight: 600,
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    textAlign: 'center',
+    transform: active ? 'scale(1)' : 'scale(0.98)',
+    boxShadow: active ? `0 6px 16px rgba(${hexToRgb(color)},0.3)` : 'none',
+  }),
   toggleRow: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
+    gridTemplateColumns: '1fr 1fr',
     gap: 12,
     marginBottom: 8,
   },
@@ -169,13 +193,14 @@ const styles = {
 function WithholdingCard({
   dependents,
   onDependentsChange,
-  isElectronic,
-  onElectronicChange,
+  taxColumn,
+  onTaxColumnChange,
   isTaxExempt,
   onTaxExemptChange,
   isNonResident,
   onNonResidentChange,
 }) {
+  const isOtsu = taxColumn === 'otsu'
   const dependentLabel = dependents === 0
     ? '扶養家族なし'
     : `扶養家族 ${dependents}人`
@@ -186,37 +211,55 @@ function WithholdingCard({
         <ShieldCheck size={18} /> 源泉所得税設定
       </div>
 
-      <div
-        style={styles.displayBox}
-        onClick={() => onDependentsChange(dependents === 0 ? 1 : 0)}
-      >
-        <Minus
-          size={16}
-          style={{ cursor: 'pointer', color: 'rgba(255,255,255,0.4)' }}
-          onClick={(e) => {
-            e.stopPropagation()
-            onDependentsChange(Math.max(0, dependents - 1))
-          }}
-        />
-        <span>{dependentLabel}</span>
-        <Plus
-          size={16}
-          style={{ cursor: 'pointer', color: 'rgba(255,255,255,0.4)' }}
-          onClick={(e) => {
-            e.stopPropagation()
-            onDependentsChange(dependents + 1)
-          }}
-        />
+      <div style={styles.columnRow}>
+        <button
+          style={styles.columnBtn(taxColumn === 'kou', colors.withholding)}
+          onClick={() => onTaxColumnChange('kou')}
+        >
+          甲欄（主たる給与）
+        </button>
+        <button
+          style={styles.columnBtn(taxColumn === 'otsu', colors.withholding)}
+          onClick={() => onTaxColumnChange('otsu')}
+        >
+          乙欄（従たる給与）
+        </button>
       </div>
 
-      <div style={styles.toggleRow}>
-        <button
-          style={styles.toggleBtn(isElectronic, colors.withholding)}
-          onClick={() => onElectronicChange(!isElectronic)}
+      {!isOtsu && (
+        <div
+          style={styles.displayBox}
+          onClick={() => onDependentsChange(dependents === 0 ? 1 : 0)}
         >
-          {isElectronic && <Check size={16} />}
-          電算
-        </button>
+          <Minus
+            size={16}
+            style={{ cursor: 'pointer', color: 'rgba(255,255,255,0.4)' }}
+            onClick={(e) => {
+              e.stopPropagation()
+              onDependentsChange(Math.max(0, dependents - 1))
+            }}
+          />
+          <span>{dependentLabel}</span>
+          <Plus
+            size={16}
+            style={{ cursor: 'pointer', color: 'rgba(255,255,255,0.4)' }}
+            onClick={(e) => {
+              e.stopPropagation()
+              onDependentsChange(dependents + 1)
+            }}
+          />
+        </div>
+      )}
+
+      {isOtsu && (
+        <div style={styles.info}>
+          乙欄は扶養控除なし。副業等の従たる給与に適用されます。
+          <br />
+          ※ 乙欄の税額は概算です。
+        </div>
+      )}
+
+      <div style={styles.toggleRow}>
         <button
           style={styles.toggleBtn(isTaxExempt, colors.withholding)}
           onClick={() => onTaxExemptChange(!isTaxExempt)}
@@ -325,8 +368,8 @@ function ResidentCard({
 export default function TaxSection({
   dependents,
   onDependentsChange,
-  isElectronic,
-  onElectronicChange,
+  taxColumn,
+  onTaxColumnChange,
   isTaxExempt,
   onTaxExemptChange,
   isNonResident,
@@ -348,8 +391,8 @@ export default function TaxSection({
       <WithholdingCard
         dependents={dependents}
         onDependentsChange={onDependentsChange}
-        isElectronic={isElectronic}
-        onElectronicChange={onElectronicChange}
+        taxColumn={taxColumn}
+        onTaxColumnChange={onTaxColumnChange}
         isTaxExempt={isTaxExempt}
         onTaxExemptChange={onTaxExemptChange}
         isNonResident={isNonResident}

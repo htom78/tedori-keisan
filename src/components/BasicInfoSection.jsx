@@ -12,6 +12,12 @@ const ERROR_MESSAGES = {
   [ERROR_CODES.GEOLOCATION_NOT_SUPPORTED]: 'この端末では位置情報が利用できません',
 }
 
+const SI_TIMING_OPTIONS = [
+  { value: 'tougetsu', label: '当月徴収' },
+  { value: 'yokugetsu', label: '翌月徴収' },
+  { value: 'yokuyokugetsu', label: '翌々月徴収' },
+]
+
 const styles = {
   card: {
     background: 'rgba(255,255,255,0.03)',
@@ -74,6 +80,12 @@ const styles = {
     gap: 16,
     marginBottom: 28,
   },
+  row3: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 1fr',
+    gap: 12,
+    marginBottom: 28,
+  },
   ageGroup: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -134,6 +146,12 @@ const styles = {
     marginTop: 8,
     animation: 'fadeIn 0.3s ease',
   },
+  info: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.35)',
+    marginTop: 6,
+    lineHeight: 1.5,
+  },
 }
 
 export default function BasicInfoSection({
@@ -145,6 +163,8 @@ export default function BasicInfoSection({
   onPrefectureChange,
   ageGroup,
   onAgeGroupChange,
+  siCollectionTiming,
+  onSiCollectionTimingChange,
 }) {
   const { detectPrefecture, isLoading, errorCode, clearError } = useGeolocation()
   const [geoError, setGeoError] = useState(null)
@@ -205,7 +225,7 @@ export default function BasicInfoSection({
         </div>
       </div>
 
-      <div style={styles.row}>
+      <div style={styles.row3}>
         <div>
           <label style={styles.label}>計算月</label>
           <select
@@ -251,6 +271,23 @@ export default function BasicInfoSection({
               {ERROR_MESSAGES[geoError]}
             </div>
           )}
+        </div>
+        <div>
+          <label style={styles.label}>社保徴収</label>
+          <select
+            style={styles.select}
+            value={siCollectionTiming}
+            onChange={(e) => onSiCollectionTimingChange(e.target.value)}
+          >
+            {SI_TIMING_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value} style={{ background: '#1a1a1a' }}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <div style={styles.info}>
+            社保料の給与控除タイミング
+          </div>
         </div>
       </div>
 

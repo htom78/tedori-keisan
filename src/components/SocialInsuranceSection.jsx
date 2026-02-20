@@ -101,6 +101,19 @@ const styles = {
     textAlign: 'right',
     transition: 'all 0.3s ease',
   },
+  rateInput: {
+    width: '100%',
+    padding: '10px 14px',
+    background: 'rgba(0,0,0,0.3)',
+    border: '2px solid rgba(255,255,255,0.1)',
+    borderRadius: 10,
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 600,
+    outline: 'none',
+    textAlign: 'right',
+    transition: 'all 0.3s ease',
+  },
   select: {
     width: '100%',
     padding: '16px 20px',
@@ -162,6 +175,20 @@ const styles = {
     color: 'rgba(255,255,255,0.4)',
     marginTop: 10,
   },
+  unionRateRow: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: 12,
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  unionHint: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.35)',
+    marginTop: 8,
+    lineHeight: 1.5,
+    fontStyle: 'italic',
+  },
 }
 
 function NumericInput({ value, onChange, placeholder }) {
@@ -187,6 +214,30 @@ function NumericInput({ value, onChange, placeholder }) {
       onBlur={handleBlur}
       placeholder={placeholder}
       inputMode="numeric"
+    />
+  )
+}
+
+function RateInput({ value, onChange, placeholder }) {
+  const handleChange = (e) => {
+    const raw = e.target.value.replace(/[^0-9.]/g, '')
+    const parsed = parseFloat(raw)
+    onChange(isNaN(parsed) ? null : parsed)
+  }
+
+  const handleBlur = (e) => {
+    const parsed = parseFloat(e.target.value)
+    onChange(isNaN(parsed) || parsed <= 0 ? null : parsed)
+  }
+
+  return (
+    <input
+      style={styles.rateInput}
+      value={value == null ? '' : String(value)}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      placeholder={placeholder}
+      inputMode="decimal"
     />
   )
 }
@@ -226,9 +277,15 @@ function HealthCard({
   customAmount,
   onCustomAmountChange,
   prefectureIndex,
+  healthUnionRate,
+  onHealthUnionRateChange,
+  nursingUnionRate,
+  onNursingUnionRateChange,
 }) {
   const prefecture = PREFECTURES[prefectureIndex]
-  const rate = isKyokai ? prefecture.healthRate : RATES.unionHealth
+  const displayRate = isKyokai
+    ? prefecture.healthRate
+    : (healthUnionRate || RATES.unionHealth)
 
   return (
     <div style={styles.subCard(colors.health)}>
@@ -245,6 +302,32 @@ function HealthCard({
         />
         協会けんぽ（チェックなし＝健保組合）
       </label>
+
+      {!isKyokai && (
+        <>
+          <div style={styles.unionRateRow}>
+            <div>
+              <label style={{ ...styles.label, fontSize: 12, marginBottom: 6 }}>健保料率 (%)</label>
+              <RateInput
+                value={healthUnionRate}
+                onChange={onHealthUnionRateChange}
+                placeholder={String(RATES.unionHealth)}
+              />
+            </div>
+            <div>
+              <label style={{ ...styles.label, fontSize: 12, marginBottom: 6 }}>介護料率 (%)</label>
+              <RateInput
+                value={nursingUnionRate}
+                onChange={onNursingUnionRateChange}
+                placeholder={String(RATES.nursing)}
+              />
+            </div>
+          </div>
+          <div style={styles.unionHint}>
+            所属の健保組合の料率を入力してください。空欄時はデフォルト値を使用します。
+          </div>
+        </>
+      )}
 
       <ModeTabBar mode={mode} onModeChange={onModeChange} color={colors.health} />
 
@@ -278,7 +361,7 @@ function HealthCard({
       )}
 
       <div style={styles.rateInfo}>
-        料率: {rate}%（本人負担 {(rate / 2).toFixed(2)}%）
+        料率: {displayRate}%（本人負担 {(displayRate / 2).toFixed(2)}%）
         {isKyokai ? ` - ${prefecture.name}` : ' - 健保組合'}
       </div>
     </div>
@@ -385,7 +468,7 @@ function NursingCard({
           )}
 
           <div style={styles.rateInfo}>
-            料率: {RATES.nursing}%（本人負担 {(RATES.nursing / 2).toFixed(2)}%）
+            料率: {RATES.nursing}%（本人負担 {(RATES.nursing / 2).toFixed(3)}%）
           </div>
         </>
       )}
@@ -450,6 +533,10 @@ export default function SocialInsuranceSection({
   onHealthStandardGradeChange,
   healthCustomAmount,
   onHealthCustomAmountChange,
+  healthUnionRate,
+  onHealthUnionRateChange,
+  nursingUnionRate,
+  onNursingUnionRateChange,
   pensionMode,
   onPensionModeChange,
   pensionStandardGrade,
@@ -485,6 +572,10 @@ export default function SocialInsuranceSection({
         customAmount={healthCustomAmount}
         onCustomAmountChange={onHealthCustomAmountChange}
         prefectureIndex={prefectureIndex}
+        healthUnionRate={healthUnionRate}
+        onHealthUnionRateChange={onHealthUnionRateChange}
+        nursingUnionRate={nursingUnionRate}
+        onNursingUnionRateChange={onNursingUnionRateChange}
       />
 
       <PensionCard

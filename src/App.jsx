@@ -99,11 +99,16 @@ export default function App() {
   const [prefectureIndex, setPrefectureIndex] = useState(DEFAULT_PREFECTURE_INDEX)
   const [ageGroup, setAgeGroup] = useState('under40')
 
+  // SI collection timing
+  const [siCollectionTiming, setSiCollectionTiming] = useState('tougetsu')
+
   // Health insurance
   const [healthMode, setHealthMode] = useState(SI_MODES.AUTO)
   const [healthIsKyokai, setHealthIsKyokai] = useState(true)
   const [healthStandardGrade, setHealthStandardGrade] = useState(null)
   const [healthCustomAmount, setHealthCustomAmount] = useState(0)
+  const [healthUnionRate, setHealthUnionRate] = useState(null)
+  const [nursingUnionRate, setNursingUnionRate] = useState(null)
 
   // Pension
   const [pensionMode, setPensionMode] = useState(SI_MODES.AUTO)
@@ -121,7 +126,7 @@ export default function App() {
 
   // Tax
   const [dependents, setDependents] = useState(0)
-  const [isElectronic, setIsElectronic] = useState(false)
+  const [taxColumn, setTaxColumn] = useState('kou')
   const [isTaxExempt, setIsTaxExempt] = useState(false)
   const [isNonResident, setIsNonResident] = useState(false)
 
@@ -169,21 +174,24 @@ export default function App() {
       healthIsKyokai,
       healthCustomAmount,
       healthStandardGrade,
+      healthUnionRate: healthUnionRate || undefined,
       pensionMode,
       pensionCustomAmount,
       pensionStandardGrade,
       nursingIsCollected,
       nursingUseCustom,
       nursingCustomAmount,
+      nursingUnionRate: nursingUnionRate || undefined,
       employmentRate,
       employmentJoined,
       dependents,
-      isElectronic,
       isTaxExempt,
       isNonResident,
+      taxColumn,
       residentTaxMode,
       residentTaxCustomAnnual,
       residentTaxHidden,
+      siCollectionTiming,
       allowances: allowanceManager.items,
       bonusMonths: bonusManager.items,
       deductions: deductionManager.items,
@@ -197,21 +205,24 @@ export default function App() {
     healthIsKyokai,
     healthCustomAmount,
     healthStandardGrade,
+    healthUnionRate,
     pensionMode,
     pensionCustomAmount,
     pensionStandardGrade,
     nursingIsCollected,
     nursingUseCustom,
     nursingCustomAmount,
+    nursingUnionRate,
     employmentRate,
     employmentJoined,
     dependents,
-    isElectronic,
     isTaxExempt,
     isNonResident,
+    taxColumn,
     residentTaxMode,
     residentTaxCustomAnnual,
     residentTaxHidden,
+    siCollectionTiming,
     allowanceManager.items,
     bonusManager.items,
     deductionManager.items,
@@ -227,7 +238,7 @@ export default function App() {
         <h1 style={styles.headerTitle}>手取り計算機</h1>
         <p style={styles.headerSub}>月給から税金・社会保険料を差し引いた実際の手取り額を瞬時に計算</p>
         <p style={{ ...styles.headerSub, fontSize: 13, marginTop: 8, color: 'rgba(255,255,255,0.3)' }}>
-          賞与計算機能付き｜指定月の詳細計算
+          令和8年(2026年)対応｜電算機特例準拠｜賞与計算機能付き
         </p>
       </header>
 
@@ -242,6 +253,8 @@ export default function App() {
             onPrefectureChange={setPrefectureIndex}
             ageGroup={ageGroup}
             onAgeGroupChange={setAgeGroup}
+            siCollectionTiming={siCollectionTiming}
+            onSiCollectionTimingChange={setSiCollectionTiming}
           />
 
           <SocialInsuranceSection
@@ -253,6 +266,10 @@ export default function App() {
             onHealthStandardGradeChange={setHealthStandardGrade}
             healthCustomAmount={healthCustomAmount}
             onHealthCustomAmountChange={setHealthCustomAmount}
+            healthUnionRate={healthUnionRate}
+            onHealthUnionRateChange={setHealthUnionRate}
+            nursingUnionRate={nursingUnionRate}
+            onNursingUnionRateChange={setNursingUnionRate}
             pensionMode={pensionMode}
             onPensionModeChange={setPensionMode}
             pensionStandardGrade={pensionStandardGrade}
@@ -275,8 +292,8 @@ export default function App() {
           <TaxSection
             dependents={dependents}
             onDependentsChange={setDependents}
-            isElectronic={isElectronic}
-            onElectronicChange={setIsElectronic}
+            taxColumn={taxColumn}
+            onTaxColumnChange={setTaxColumn}
             isTaxExempt={isTaxExempt}
             onTaxExemptChange={setIsTaxExempt}
             isNonResident={isNonResident}
@@ -311,8 +328,8 @@ export default function App() {
       </div>
 
       <footer style={styles.footer}>
-        <p>※ この計算は概算です。月額計算は簡易的な計算方法を使用しています。</p>
-        <p>実際の手取り額は、個人の状況により異なります。詳細は税務署または社会保険労務士にご相談ください。</p>
+        <p>※ 令和8年(2026年)の協会けんぽ料率・電算機特例に基づく計算です。</p>
+        <p>乙欄の計算は概算値です。実際の手取り額は個人の状況により異なります。</p>
       </footer>
     </div>
   )

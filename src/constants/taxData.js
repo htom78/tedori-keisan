@@ -1,55 +1,55 @@
-// Japanese Tax & Social Insurance Data (Reiwa 7 / 2025)
+// Japanese Tax & Social Insurance Data (Reiwa 8 / 2026)
 
-// 47 Prefectures with Kyokai Kenpo health insurance rates (employee share %)
-// Source: 全国健康保険協会 (Kyokai Kenpo) Reiwa 7 rates
+// 47 Prefectures with Kyokai Kenpo health insurance rates (total %)
+// Source: 全国健康保険協会 (Kyokai Kenpo) Reiwa 8 rates
 export const PREFECTURES = [
-  { code: '01', name: '北海道', healthRate: 10.29 },
-  { code: '02', name: '青森県', healthRate: 9.82 },
-  { code: '03', name: '岩手県', healthRate: 9.63 },
-  { code: '04', name: '宮城県', healthRate: 10.01 },
-  { code: '05', name: '秋田県', healthRate: 9.78 },
-  { code: '06', name: '山形県', healthRate: 9.86 },
-  { code: '07', name: '福島県', healthRate: 9.61 },
-  { code: '08', name: '茨城県', healthRate: 9.73 },
-  { code: '09', name: '栃木県', healthRate: 9.79 },
+  { code: '01', name: '北海道', healthRate: 10.31 },
+  { code: '02', name: '青森県', healthRate: 9.85 },
+  { code: '03', name: '岩手県', healthRate: 9.62 },
+  { code: '04', name: '宮城県', healthRate: 10.11 },
+  { code: '05', name: '秋田県', healthRate: 10.01 },
+  { code: '06', name: '山形県', healthRate: 9.75 },
+  { code: '07', name: '福島県', healthRate: 9.62 },
+  { code: '08', name: '茨城県', healthRate: 9.67 },
+  { code: '09', name: '栃木県', healthRate: 9.82 },
   { code: '10', name: '群馬県', healthRate: 9.77 },
-  { code: '11', name: '埼玉県', healthRate: 9.78 },
-  { code: '12', name: '千葉県', healthRate: 9.77 },
+  { code: '11', name: '埼玉県', healthRate: 9.76 },
+  { code: '12', name: '千葉県', healthRate: 9.79 },
   { code: '13', name: '東京都', healthRate: 9.91 },
-  { code: '14', name: '神奈川県', healthRate: 9.85 },
-  { code: '15', name: '新潟県', healthRate: 9.35 },
-  { code: '16', name: '富山県', healthRate: 9.57 },
-  { code: '17', name: '石川県', healthRate: 9.94 },
-  { code: '18', name: '福井県', healthRate: 9.91 },
-  { code: '19', name: '山梨県', healthRate: 9.81 },
-  { code: '20', name: '長野県', healthRate: 9.49 },
-  { code: '21', name: '岐阜県', healthRate: 9.80 },
-  { code: '22', name: '静岡県', healthRate: 9.64 },
+  { code: '14', name: '神奈川県', healthRate: 9.92 },
+  { code: '15', name: '新潟県', healthRate: 9.55 },
+  { code: '16', name: '富山県', healthRate: 9.65 },
+  { code: '17', name: '石川県', healthRate: 9.88 },
+  { code: '18', name: '福井県', healthRate: 9.94 },
+  { code: '19', name: '山梨県', healthRate: 9.89 },
+  { code: '20', name: '長野県', healthRate: 9.69 },
+  { code: '21', name: '岐阜県', healthRate: 9.93 },
+  { code: '22', name: '静岡県', healthRate: 9.80 },
   { code: '23', name: '愛知県', healthRate: 10.03 },
-  { code: '24', name: '三重県', healthRate: 9.81 },
-  { code: '25', name: '滋賀県', healthRate: 9.72 },
+  { code: '24', name: '三重県', healthRate: 9.99 },
+  { code: '25', name: '滋賀県', healthRate: 9.97 },
   { code: '26', name: '京都府', healthRate: 10.03 },
-  { code: '27', name: '大阪府', healthRate: 10.22 },
-  { code: '28', name: '兵庫県', healthRate: 10.07 },
-  { code: '29', name: '奈良県', healthRate: 9.89 },
-  { code: '30', name: '和歌山県', healthRate: 9.83 },
-  { code: '31', name: '鳥取県', healthRate: 9.82 },
-  { code: '32', name: '島根県', healthRate: 10.07 },
-  { code: '33', name: '岡山県', healthRate: 10.07 },
-  { code: '34', name: '広島県', healthRate: 9.92 },
-  { code: '35', name: '山口県', healthRate: 10.03 },
-  { code: '36', name: '徳島県', healthRate: 10.25 },
-  { code: '37', name: '香川県', healthRate: 10.28 },
-  { code: '38', name: '愛媛県', healthRate: 9.97 },
-  { code: '39', name: '高知県', healthRate: 10.12 },
-  { code: '40', name: '福岡県', healthRate: 10.36 },
-  { code: '41', name: '佐賀県', healthRate: 10.42 },
-  { code: '42', name: '長崎県', healthRate: 10.26 },
-  { code: '43', name: '熊本県', healthRate: 10.11 },
-  { code: '44', name: '大分県', healthRate: 10.07 },
-  { code: '45', name: '宮崎県', healthRate: 9.76 },
-  { code: '46', name: '鹿児島県', healthRate: 10.26 },
-  { code: '47', name: '沖縄県', healthRate: 9.56 },
+  { code: '27', name: '大阪府', healthRate: 10.24 },
+  { code: '28', name: '兵庫県', healthRate: 10.16 },
+  { code: '29', name: '奈良県', healthRate: 10.02 },
+  { code: '30', name: '和歌山県', healthRate: 10.19 },
+  { code: '31', name: '鳥取県', healthRate: 9.93 },
+  { code: '32', name: '島根県', healthRate: 9.94 },
+  { code: '33', name: '岡山県', healthRate: 10.17 },
+  { code: '34', name: '広島県', healthRate: 9.97 },
+  { code: '35', name: '山口県', healthRate: 10.36 },
+  { code: '36', name: '徳島県', healthRate: 10.47 },
+  { code: '37', name: '香川県', healthRate: 10.21 },
+  { code: '38', name: '愛媛県', healthRate: 10.18 },
+  { code: '39', name: '高知県', healthRate: 10.13 },
+  { code: '40', name: '福岡県', healthRate: 10.31 },
+  { code: '41', name: '佐賀県', healthRate: 10.78 },
+  { code: '42', name: '長崎県', healthRate: 10.41 },
+  { code: '43', name: '熊本県', healthRate: 10.12 },
+  { code: '44', name: '大分県', healthRate: 10.25 },
+  { code: '45', name: '宮崎県', healthRate: 10.09 },
+  { code: '46', name: '鹿児島県', healthRate: 10.31 },
+  { code: '47', name: '沖縄県', healthRate: 9.44 },
 ]
 
 // Health Insurance Standard Remuneration Table (標準報酬月額)
@@ -157,21 +157,18 @@ export const AGE_GROUPS = [
 // Social insurance rates (%)
 export const RATES = {
   pension: 18.3,          // Total rate (employee pays half = 9.15%)
-  nursing: 1.82,          // Reiwa 7 nursing care rate (total, employee half = 0.91%)
-  unionHealth: 9.50,      // Health union fixed total rate
+  nursing: 1.59,          // Reiwa 8 nursing care rate (total, employee half = 0.795%)
+  unionHealth: 9.50,      // Health union default total rate
 }
 
 // Pension bonus cap per occurrence (標準賞与額上限)
 export const PENSION_BONUS_CAP = 1500000
 
-// Non-resident flat withholding rate (乙欄 20% + 復興2.1% = 20.42%)
-export const NON_RESIDENT_TAX_RATE = 20.42
+// Non-resident flat withholding rate (20% + 復興2.1% = 20.42%)
+export const NON_RESIDENT_TAX_RATE = 0.2042
 
 // Commute allowance tax-free limit (通勤手当非課税限度額)
 export const COMMUTE_TAX_FREE_LIMIT = 150000
-
-// Employment insurance monthly earnings cap
-export const EMPLOYMENT_INSURANCE_CAP = 1620000
 
 // Employment insurance categories and employee rates (%)
 export const EMPLOYMENT_CATEGORIES = [
@@ -181,8 +178,67 @@ export const EMPLOYMENT_CATEGORIES = [
   { id: 'none', label: '加入なし', rate: 0 },
 ]
 
-// Income tax brackets (taxable income → rate, deduction)
-// Applied to monthly taxable salary after social insurance deduction
+// 月額給与所得控除表 (電算機特例 - Monthly Salary Income Deduction)
+// Input: 社会保険料等控除後の給与等の金額
+export const MONTHLY_SALARY_DEDUCTION = [
+  { upper: 135416, calc: () => 45834 },
+  { upper: 149999, calc: (s) => Math.floor(s * 0.4) - 8333 },
+  { upper: 299999, calc: (s) => Math.floor(s * 0.3) + 6667 },
+  { upper: 549999, calc: (s) => Math.floor(s * 0.2) + 36667 },
+  { upper: 708330, calc: (s) => Math.floor(s * 0.1) + 91667 },
+  { upper: Infinity, calc: () => 162500 },
+]
+
+// 月額基礎控除 (電算機特例 - Monthly Basic Deduction)
+// Input: 給与所得 (salary after MONTHLY_SALARY_DEDUCTION)
+export const MONTHLY_BASIC_DEDUCTION = [
+  { upper: 2162499, amount: 40000 },
+  { upper: 2204166, amount: 26667 },
+  { upper: 2245833, amount: 13334 },
+  { upper: Infinity, amount: 0 },
+]
+
+// 月額税率表 (電算機特例 - Monthly Progressive Tax Rates)
+// Rates already include 復興特別所得税 (2.1% reconstruction surtax)
+// e.g., 5% base × 1.021 = 5.105%
+export const MONTHLY_TAX_BRACKETS = [
+  { upper: 162500, rate: 0.05105, deduction: 0 },
+  { upper: 275000, rate: 0.10210, deduction: 8296 },
+  { upper: 579166, rate: 0.20420, deduction: 36374 },
+  { upper: 750000, rate: 0.23483, deduction: 54113 },
+  { upper: 1500000, rate: 0.33693, deduction: 130688 },
+  { upper: 3333333, rate: 0.40840, deduction: 237893 },
+  { upper: Infinity, rate: 0.45945, deduction: 408061 },
+]
+
+// 乙欄 approximate tax brackets (従たる給与)
+// Approximation based on official 月額表 乙欄 data points.
+// For exact values, consult the official 源泉徴収税額表.
+// Rates include 復興特別所得税. Applied to 社保控除後金額 directly (no deductions).
+export const OTSU_TAX_BRACKETS = [
+  { upper: 100000, rate: 0.03063, deduction: 0 },
+  { upper: 150000, rate: 0.08474, deduction: 5411 },
+  { upper: 200000, rate: 0.13600, deduction: 13100 },
+  { upper: 300000, rate: 0.22600, deduction: 31100 },
+  { upper: 500000, rate: 0.35000, deduction: 68300 },
+  { upper: 750000, rate: 0.37400, deduction: 80300 },
+  { upper: Infinity, rate: 0.45945, deduction: 144388 },
+]
+
+// Tax column types
+export const TAX_COLUMNS = {
+  KOU: 'kou',     // 甲欄 (主たる給与 - primary employment)
+  OTSU: 'otsu',   // 乙欄 (従たる給与 - secondary employment)
+}
+
+// Social insurance collection timing
+export const SI_COLLECTION_TIMING = {
+  TOUGETSU: 'tougetsu',           // 当月 (same month)
+  YOKUGETSU: 'yokugetsu',         // 翌月 (next month, most common)
+  YOKUYOKUGETSU: 'yokuyokugetsu', // 翌々月 (month after next)
+}
+
+// Income tax brackets (annual - for resident tax auto calc)
 export const INCOME_TAX_TABLE = [
   { upper: 1625000, rate: 5, deduction: 0 },
   { upper: 1800000, rate: 5, deduction: 0 },
@@ -193,23 +249,6 @@ export const INCOME_TAX_TABLE = [
   { upper: 40000000, rate: 40, deduction: 2796000 },
   { upper: Infinity, rate: 45, deduction: 4796000 },
 ]
-
-// Monthly withholding tax table (甲欄 - simplified approximation)
-// This maps monthly taxable salary (after social insurance) to withholding amount
-// Using bracket-based approximation for simplicity
-export const WITHHOLDING_BRACKETS = [
-  { upper: 88000, rate: 0, base: 0 },
-  { upper: 89000, rate: 3.063, base: 0 },
-  { upper: 162500, rate: 3.063, base: 0 },
-  { upper: 275000, rate: 5.105, base: 720 },
-  { upper: 579166, rate: 10.21, base: 4170 },
-  { upper: 750000, rate: 20.42, base: 24170 },
-  { upper: 1500000, rate: 23.483, base: 44170 },
-  { upper: Infinity, rate: 33.693, base: 117170 },
-]
-
-// Reconstruction special income tax rate
-export const RECONSTRUCTION_TAX_RATE = 2.1 // % of income tax
 
 // Months
 export const MONTHS = Array.from({ length: 12 }, (_, i) => ({
@@ -260,9 +299,9 @@ export const DEFAULT_PREFECTURE_INDEX = 12
 // Resident tax default rate
 export const RESIDENT_TAX_RATE = 10 // %
 
-// Salary employment income deduction table
+// Salary employment income deduction table (annual - for resident tax)
 export const SALARY_DEDUCTION_TABLE = [
-  { upper: 1625000, calc: (s) => 550000 },
+  { upper: 1625000, calc: () => 550000 },
   { upper: 1800000, calc: (s) => Math.floor(s * 0.4) - 100000 },
   { upper: 3600000, calc: (s) => Math.floor(s * 0.3) + 80000 },
   { upper: 6600000, calc: (s) => Math.floor(s * 0.2) + 440000 },
