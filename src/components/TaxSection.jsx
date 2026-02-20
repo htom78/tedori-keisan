@@ -255,7 +255,7 @@ function WithholdingCard({
         <div style={styles.info}>
           乙欄は扶養控除なし。副業等の従たる給与に適用されます。
           <br />
-          ※ 乙欄の税額は概算です。
+          電算機計算の特例（令和8年分）に基づく計算です。
         </div>
       )}
 

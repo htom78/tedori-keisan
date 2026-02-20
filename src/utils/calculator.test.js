@@ -344,7 +344,7 @@ describe('calculateWithholdingTax', () => {
     })
   })
 
-  describe('乙欄 (secondary employment)', () => {
+  describe('乙欄 電算機特例 (secondary employment)', () => {
     it('calculates higher tax than 甲欄 for same salary', () => {
       const kou = calculateWithholdingTax({
         monthlySalary: 300000,
@@ -377,13 +377,145 @@ describe('calculateWithholdingTax', () => {
       expect(noDeps).toBe(withDeps)
     })
 
-    it('returns rounded to nearest 10 yen', () => {
+    it('Range 1: afterSi < 105,000 → floor(afterSi × 3.063%)', () => {
+      // afterSi = 88,000 → floor(88000 * 0.03063) = floor(2695.44) = 2695
+      const result = calculateWithholdingTax({
+        monthlySalary: 88000,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      expect(result).toBe(2695)
+    })
+
+    it('Range 2: afterSi = 200,000 → 計算基準額方式', () => {
+      // afterSi = 200,000 → base=199,000
+      // A(497500): deduction=136167, taxable=312999, tax=26974
+      // B(298500): deduction=96217, taxable=153949, tax=7697
+      // C = round100(19277) = 19300, final = round100(19300*1.021) = 19700
+      const result = calculateWithholdingTax({
+        monthlySalary: 200000,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      expect(result).toBe(19700)
+    })
+
+    it('Range 2: afterSi = 260,000 (¥300K salary - ¥40K SI)', () => {
       const result = calculateWithholdingTax({
         monthlySalary: 300000,
         socialInsuranceTotal: 40000,
         taxColumn: 'otsu',
       })
-      expect(result % 10).toBe(0)
+      expect(result).toBe(39600)
+    })
+
+    it('Range 2: afterSi = 300,000', () => {
+      const result = calculateWithholdingTax({
+        monthlySalary: 300000,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      expect(result).toBe(53600)
+    })
+
+    it('Range 3: afterSi = 1,000,000', () => {
+      // 259200 + (1000000 - 740000) * 0.4084 = 259200 + 106184 = 365384
+      const result = calculateWithholdingTax({
+        monthlySalary: 1000000,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      expect(result).toBe(365384)
+    })
+
+    it('Range 4: afterSi = 2,000,000', () => {
+      // 655400 + (2000000 - 1710000) * 0.45945 = 655400 + 133240.5 = 788640
+      const result = calculateWithholdingTax({
+        monthlySalary: 2000000,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      expect(result).toBe(788640)
+    })
+
+    it('boundary: afterSi = 104,999 (Range 1) vs 105,000 (Range 2)', () => {
+      const range1 = calculateWithholdingTax({
+        monthlySalary: 104999,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      const range2 = calculateWithholdingTax({
+        monthlySalary: 105000,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      expect(range1).toBe(3216) // floor(104999 * 0.03063)
+      expect(range2).toBe(3800) // 計算基準額方式
+    })
+
+    it('boundary: step size changes at 220,999 / 221,000', () => {
+      const step2000 = calculateWithholdingTax({
+        monthlySalary: 220999,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      const step3000 = calculateWithholdingTax({
+        monthlySalary: 221000,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      expect(step2000).toBe(25800)
+      expect(step3000).toBe(26400)
+    })
+
+    it('boundary: afterSi = 740,000 (Range 2) vs 740,001 (Range 3)', () => {
+      const range2 = calculateWithholdingTax({
+        monthlySalary: 740000,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      const range3 = calculateWithholdingTax({
+        monthlySalary: 740001,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      expect(range2).toBe(259200)
+      expect(range3).toBe(259200) // floor(259200 + 1*0.4084)
+    })
+
+    it('boundary: afterSi = 1,709,999 (Range 3) vs 1,710,000 (Range 4)', () => {
+      const range3 = calculateWithholdingTax({
+        monthlySalary: 1709999,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      const range4 = calculateWithholdingTax({
+        monthlySalary: 1710000,
+        socialInsuranceTotal: 0,
+        taxColumn: 'otsu',
+      })
+      expect(range3).toBe(655347) // floor(259200 + 969999*0.4084)
+      expect(range4).toBe(655400) // floor(655400 + 0)
+    })
+
+    it('returns 0 for afterSi <= 0', () => {
+      const result = calculateWithholdingTax({
+        monthlySalary: 10000,
+        socialInsuranceTotal: 20000,
+        taxColumn: 'otsu',
+      })
+      expect(result).toBe(0)
+    })
+
+    it('Range 2 results are multiples of 100 (50円丸め)', () => {
+      for (const salary of [105000, 200000, 300000, 500000, 740000]) {
+        const result = calculateWithholdingTax({
+          monthlySalary: salary,
+          socialInsuranceTotal: 0,
+          taxColumn: 'otsu',
+        })
+        expect(result % 100).toBe(0)
+      }
     })
   })
 })

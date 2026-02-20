@@ -329,7 +329,7 @@ export default function App() {
 
       <footer style={styles.footer}>
         <p>※ 令和8年(2026年)の協会けんぽ料率・電算機特例に基づく計算です。</p>
-        <p>乙欄の計算は概算値です。実際の手取り額は個人の状況により異なります。</p>
+        <p>実際の手取り額は個人の状況により異なります。</p>
       </footer>
     </div>
   )

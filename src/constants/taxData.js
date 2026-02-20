@@ -211,19 +211,39 @@ export const MONTHLY_TAX_BRACKETS = [
   { upper: Infinity, rate: 0.45945, deduction: 408061 },
 ]
 
-// 乙欄 approximate tax brackets (従たる給与)
-// Approximation based on official 月額表 乙欄 data points.
-// For exact values, consult the official 源泉徴収税額表.
-// Rates include 復興特別所得税. Applied to 社保控除後金額 directly (no deductions).
-export const OTSU_TAX_BRACKETS = [
-  { upper: 100000, rate: 0.03063, deduction: 0 },
-  { upper: 150000, rate: 0.08474, deduction: 5411 },
-  { upper: 200000, rate: 0.13600, deduction: 13100 },
-  { upper: 300000, rate: 0.22600, deduction: 31100 },
-  { upper: 500000, rate: 0.35000, deduction: 68300 },
-  { upper: 750000, rate: 0.37400, deduction: 80300 },
-  { upper: Infinity, rate: 0.45945, deduction: 144388 },
+// 乙欄 電算機計算 (令和8年分以降)
+// Source: 国税庁 denshi_02.pdf
+
+// 計算基準額の階差テーブル (Range 2: 105,000〜740,000)
+export const OTSU_STEP_TABLE = [
+  { upper: 220999, step: 2000, minimum: 105000 },
+  { upper: 739999, step: 3000, minimum: 221000 },
 ]
+
+// 第1表: 給与所得控除の額 (1円未満切上げ)
+export const OTSU_SALARY_DEDUCTION = [
+  { upper: 158333, calc: () => 54167 },
+  { upper: 299999, calc: (a) => Math.ceil(a * 0.3 + 6667) },
+  { upper: 549999, calc: (a) => Math.ceil(a * 0.2 + 36667) },
+  { upper: 708330, calc: (a) => Math.ceil(a * 0.1 + 91667) },
+  { upper: Infinity, calc: () => 162500 },
+]
+
+// 第2表: 基礎控除の額
+export const OTSU_BASIC_DEDUCTION = 48334
+
+// 第3表: 税率 (復興特別所得税を含まない基本税率)
+export const OTSU_BASE_TAX_BRACKETS = [
+  { upper: 162500, rate: 0.05, deduction: 0 },
+  { upper: 275000, rate: 0.10, deduction: 8125 },
+  { upper: 579166, rate: 0.20, deduction: 35625 },
+  { upper: 750000, rate: 0.23, deduction: 53000 },
+  { upper: 1500000, rate: 0.33, deduction: 128000 },
+  { upper: 3333333, rate: 0.40, deduction: 233000 },
+]
+
+// 扶養控除等の額（従たる給与）— 将来用
+export const OTSU_DEPENDENT_DEDUCTION = 1610
 
 // Tax column types
 export const TAX_COLUMNS = {

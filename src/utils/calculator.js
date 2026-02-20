@@ -9,7 +9,10 @@ import {
   MONTHLY_SALARY_DEDUCTION,
   MONTHLY_BASIC_DEDUCTION,
   MONTHLY_TAX_BRACKETS,
-  OTSU_TAX_BRACKETS,
+  OTSU_STEP_TABLE,
+  OTSU_SALARY_DEDUCTION,
+  OTSU_BASIC_DEDUCTION,
+  OTSU_BASE_TAX_BRACKETS,
   NON_RESIDENT_TAX_RATE,
   RESIDENT_TAX_RATE,
   SALARY_DEDUCTION_TABLE,
@@ -180,21 +183,80 @@ function calculateElectronic(afterSi, dependents) {
   return Math.round(Math.max(0, tax) / 10) * 10
 }
 
-// 乙欄: Calculate withholding tax for secondary employment
-// Approximation based on official 月額表 乙欄 data points.
-// Applied to 社保控除後金額 directly (no salary/basic/dependent deductions).
+// 50円未満切捨て、50円以上100円未満は100円に切上げ (乙欄の50円丸め)
+function round100(value) {
+  return Math.round(value / 100) * 100
+}
+
+// 乙欄 電算機特例: Calculate withholding tax for secondary employment
+// Source: 国税庁 denshi_02.pdf (令和8年分以降)
+// 社保控除後金額(Ⓐ)の4レンジで計算方法が異なる
 function calculateOtsu(afterSi) {
   if (afterSi <= 0) return 0
 
-  let tax = 0
-  for (const bracket of OTSU_TAX_BRACKETS) {
-    if (afterSi <= bracket.upper) {
-      tax = Math.floor(afterSi * bracket.rate - bracket.deduction)
-      break
-    }
+  // Range 1: Ⓐ < 105,000 → Ⓐ × 3.063%（1円未満切捨て）
+  if (afterSi < 105000) {
+    return Math.floor(afterSi * 0.03063)
   }
 
-  return Math.round(Math.max(0, tax) / 10) * 10
+  // Range 3: 740,001 ≤ Ⓐ < 1,710,000
+  if (afterSi >= 740001 && afterSi < 1710000) {
+    return Math.floor(259200 + (afterSi - 740000) * 0.4084)
+  }
+
+  // Range 4: Ⓐ ≥ 1,710,000
+  if (afterSi >= 1710000) {
+    return Math.floor(655400 + (afterSi - 1710000) * 0.45945)
+  }
+
+  // Range 2: 105,000 ≤ Ⓐ ≤ 740,000 (計算基準額方式)
+
+  // Step 1: 計算基準額 — afterSiを階差に合わせてスナップ
+  let base
+  if (afterSi === 740000) {
+    base = 740000
+  } else {
+    let step, minimum
+    for (const entry of OTSU_STEP_TABLE) {
+      if (afterSi <= entry.upper) {
+        step = entry.step
+        minimum = entry.minimum
+        break
+      }
+    }
+    base = afterSi - ((afterSi - minimum) % step)
+  }
+
+  // Step 2: A(base×2.5) and B(base×1.5) の税額を算出
+  const calcTax = (multiplied) => {
+    // 給与所得控除 (第1表)
+    let deduction = 0
+    for (const b of OTSU_SALARY_DEDUCTION) {
+      if (multiplied <= b.upper) {
+        deduction = b.calc(multiplied)
+        break
+      }
+    }
+    // 課税所得 = multiplied - 給与所得控除 - 基礎控除
+    const taxable = Math.max(0, multiplied - deduction - OTSU_BASIC_DEDUCTION)
+    // 税額（基本税率, 第3表）
+    for (const b of OTSU_BASE_TAX_BRACKETS) {
+      if (taxable <= b.upper) {
+        return Math.floor(taxable * b.rate - b.deduction)
+      }
+    }
+    // fallback: highest bracket
+    return Math.floor(taxable * 0.40 - 233000)
+  }
+
+  const taxA = calcTax(base * 2.5)
+  const taxB = calcTax(base * 1.5)
+
+  // Step 3: C = A - B (50円丸め)
+  const c = round100(taxA - taxB)
+
+  // Step 4: × 1.021 復興特別所得税 (50円丸め)
+  return Math.max(0, round100(c * 1.021))
 }
 
 // Calculate salary income deduction (給与所得控除) - annual
