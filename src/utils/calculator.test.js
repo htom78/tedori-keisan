@@ -91,6 +91,19 @@ describe('calculateHealthInsurance', () => {
     expect(result).toBe(Math.round(300000 * (8.50 / 100) / 2))
   })
 
+  it('uses fRound (50銭以下切捨て) for health insurance', () => {
+    // ¥150,000 × 9.91% / 2 = 7,432.5 → fRound = 7,432 (not 7,433)
+    const result = calculateHealthInsurance({
+      mode: 'auto',
+      salary: 150000,
+      prefectureIndex: 12, // Tokyo 9.91%
+      isKyokai: true,
+      customAmount: 0,
+      standardGrade: null,
+    })
+    expect(result).toBe(7432)
+  })
+
   it('uses standard grade when specified', () => {
     const result = calculateHealthInsurance({
       mode: 'standard',

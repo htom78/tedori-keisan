@@ -18,6 +18,17 @@ import {
   PENSION_BONUS_CAP,
 } from '../constants/taxData'
 
+// 50銭以下切捨て、50銭超え切上げ (Japanese regulatory rounding for social insurance)
+// Differs from Math.round only at exactly .5: fRound(.5)=0, Math.round(.5)=1
+// Uses tolerance to handle floating point imprecision (e.g., 7432.5000000000001)
+function fRound(value) {
+  const fractional = value - Math.floor(value)
+  if (Math.abs(fractional - 0.5) < 1e-6) {
+    return Math.floor(value)
+  }
+  return Math.round(value)
+}
+
 // Look up standard remuneration from a table given a salary
 function lookupStandard(table, salary) {
   for (const [, standard, lower, upper] of table) {
@@ -62,7 +73,7 @@ export function calculateHealthInsurance(settings) {
   }
 
   const employeeShare = standardRemuneration * (totalRate / 100) / 2
-  return Math.round(employeeShare)
+  return fRound(employeeShare)
 }
 
 // Calculate pension insurance (employee share)
@@ -113,7 +124,7 @@ export function calculateNursing(settings) {
 
   const rate = nursingUnionRate || RATES.nursing
   const employeeShare = standardRemuneration * (rate / 100) / 2
-  return Math.round(employeeShare)
+  return fRound(employeeShare)
 }
 
 // Calculate employment insurance (employee share)
@@ -348,14 +359,14 @@ export function calculateTakeHome(settings) {
     const healthTotalRate = healthIsKyokai
       ? (PREFECTURES[prefectureIndex] || PREFECTURES[12]).healthRate
       : (healthUnionRate || RATES.unionHealth)
-    bonusHealthSI = Math.round(bonusAmount * (healthTotalRate / 100) / 2)
+    bonusHealthSI = fRound(bonusAmount * (healthTotalRate / 100) / 2)
 
     const cappedBonus = Math.min(bonusAmount, PENSION_BONUS_CAP)
     bonusPensionSI = Math.round(cappedBonus * (RATES.pension / 100) / 2)
 
     if (nursingIsCollected && !nursingUseCustom) {
       const nRate = nursingUnionRate || RATES.nursing
-      bonusNursingSI = Math.round(bonusAmount * (nRate / 100) / 2)
+      bonusNursingSI = fRound(bonusAmount * (nRate / 100) / 2)
     }
   }
 
