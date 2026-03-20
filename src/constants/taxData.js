@@ -178,40 +178,8 @@ export const EMPLOYMENT_CATEGORIES = [
   { id: 'none', label: '加入なし', rate: 0 },
 ]
 
-// 月額給与所得控除表 (電算機特例 - Monthly Salary Income Deduction)
-// Source: 国税庁 denshi_01.pdf 第1表（令和8年分以降）
-// 注: 1円未満切上げ → Math.ceil
-export const MONTHLY_SALARY_DEDUCTION = [
-  { upper: 158333, calc: () => 54167 },
-  { upper: 299999, calc: (s) => Math.ceil(s * 0.3 + 6667) },
-  { upper: 549999, calc: (s) => Math.ceil(s * 0.2 + 36667) },
-  { upper: 708330, calc: (s) => Math.ceil(s * 0.1 + 91667) },
-  { upper: Infinity, calc: () => 162500 },
-]
-
-// 月額基礎控除 (電算機特例 - Monthly Basic Deduction)
-// Source: 国税庁 denshi_01.pdf 第3表（令和8年分以降）
-// Input: afterSi = 社会保険料等控除後の給与等の金額(A)
-export const MONTHLY_BASIC_DEDUCTION = [
-  { upper: 2120833, amount: 48334 },
-  { upper: 2162499, amount: 40000 },
-  { upper: 2204166, amount: 26667 },
-  { upper: 2245833, amount: 13334 },
-  { upper: Infinity, amount: 0 },
-]
-
-// 月額税率表 (電算機特例 - Monthly Progressive Tax Rates)
-// Rates already include 復興特別所得税 (2.1% reconstruction surtax)
-// e.g., 5% base × 1.021 = 5.105%
-export const MONTHLY_TAX_BRACKETS = [
-  { upper: 162500, rate: 0.05105, deduction: 0 },
-  { upper: 275000, rate: 0.10210, deduction: 8296 },
-  { upper: 579166, rate: 0.20420, deduction: 36374 },
-  { upper: 750000, rate: 0.23483, deduction: 54113 },
-  { upper: 1500000, rate: 0.33693, deduction: 130688 },
-  { upper: 3333333, rate: 0.40840, deduction: 237893 },
-  { upper: Infinity, rate: 0.45945, deduction: 408061 },
-]
+// 甲欄月額表は src/constants/withholdingTable.js に移動
+// (電算機特例の MONTHLY_SALARY_DEDUCTION, MONTHLY_BASIC_DEDUCTION, MONTHLY_TAX_BRACKETS は廃止)
 
 // 乙欄 電算機計算 (令和8年分以降)
 // Source: 国税庁 denshi_02.pdf

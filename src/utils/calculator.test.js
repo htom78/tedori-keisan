@@ -296,7 +296,7 @@ describe('calculateWithholdingTax', () => {
     expect(result).toBe(0)
   })
 
-  describe('電算機特例 (electronic formula)', () => {
+  describe('甲欄月額表 (table lookup)', () => {
     it('calculates correctly for ¥300,000 salary, ¥43,965 SI, 0 dependents', () => {
       const result = calculateWithholdingTax({
         monthlySalary: 300000,
@@ -304,14 +304,8 @@ describe('calculateWithholdingTax', () => {
         dependents: 0,
         taxColumn: 'kou',
       })
-      // afterSi = 256035
-      // salaryDeduction: ceil(256035 * 0.3 + 6667) = ceil(83477.5) = 83478
-      // employmentIncome = 256035 - 83478 = 172557
-      // basicDeduction = 48334 (afterSi ≤ 2120833)
-      // taxable = 172557 - 48334 = 124223
-      // tax = floor(124223 * 0.05105) = floor(6341.58) = 6341
-      // rounded = round(6341 / 10) * 10 = 6340
-      expect(result).toBe(6340)
+      // afterSi = 256035 → 月額表 254,000~257,000 区間 → dep0 = 6,320
+      expect(result).toBe(6320)
     })
 
     it('calculates correctly for ¥500,000 salary, ¥70,000 SI, 2 dependents', () => {
@@ -321,26 +315,19 @@ describe('calculateWithholdingTax', () => {
         dependents: 2,
         taxColumn: 'kou',
       })
-      // afterSi = 430000
-      // salaryDeduction: ceil(430000 * 0.2 + 36667) = ceil(122667) = 122667
-      // employmentIncome = 430000 - 122667 = 307333
-      // basicDeduction = 48334 (afterSi ≤ 2120833)
-      // dependentDeduction = 2 * 31667 = 63334
-      // taxable = 307333 - 48334 - 63334 = 195665
-      // bracket: 195665 <= 275000, rate 0.10210, deduction 8296
-      // tax = floor(195665 * 0.10210 - 8296) = floor(19977.41 - 8296) = floor(11681.41) = 11681
-      // rounded = round(11681 / 10) * 10 = 11680
-      expect(result).toBe(11680)
+      // afterSi = 430000 → 月額表 428,000~431,000 区間 → dep2 = 11,640
+      expect(result).toBe(11640)
     })
 
-    it('returns rounded to nearest 10 yen', () => {
+    it('returns non-negative integer from table', () => {
       const result = calculateWithholdingTax({
         monthlySalary: 300000,
         socialInsuranceTotal: 43965,
         dependents: 0,
         taxColumn: 'kou',
       })
-      expect(result % 10).toBe(0)
+      expect(result).toBeGreaterThanOrEqual(0)
+      expect(Number.isInteger(result)).toBe(true)
     })
   })
 
@@ -701,8 +688,8 @@ describe('calculateTakeHome', () => {
       // Total SI: 14865 + 27450 + 0 + 1650 = 43965
       expect(result.socialInsuranceTotal).toBe(43965)
 
-      // Withholding: 電算機特例 = 6340 (verified in withholding test)
-      expect(result.withholdingTax).toBe(6340)
+      // Withholding: 月額表 afterSi=256035 → 254K~257K区間 dep0 = 6320
+      expect(result.withholdingTax).toBe(6320)
     })
   })
 })

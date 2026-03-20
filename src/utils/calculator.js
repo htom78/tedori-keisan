@@ -6,9 +6,6 @@ import {
   PENSION_STANDARD_TABLE,
   PREFECTURES,
   RATES,
-  MONTHLY_SALARY_DEDUCTION,
-  MONTHLY_BASIC_DEDUCTION,
-  MONTHLY_TAX_BRACKETS,
   OTSU_STEP_TABLE,
   OTSU_SALARY_DEDUCTION,
   OTSU_BASIC_DEDUCTION,
@@ -20,6 +17,7 @@ import {
   COMMUTE_TAX_FREE_LIMIT,
   PENSION_BONUS_CAP,
 } from '../constants/taxData'
+import { KOU_MONTHLY_TABLE, KOU_740K_BASE } from '../constants/withholdingTable'
 
 // 50銭以下切捨て、50銭超え切上げ (Japanese regulatory rounding for social insurance)
 // Differs from Math.round only at exactly .5: fRound(.5)=0, Math.round(.5)=1
@@ -138,50 +136,30 @@ export function calculateEmployment(settings) {
   return Math.floor(base * (rate / 100))
 }
 
-// 電算機特例: Calculate 甲欄 withholding tax using official electronic formula
-// Input: afterSi = 社会保険料等控除後の給与等の金額
-function calculateElectronic(afterSi, dependents) {
-  if (afterSi <= 0) return 0
+// 甲欄月額表: 表引き方式で源泉徴収税額を求める
+// Source: 国税庁 給与所得の源泉徴収税額表（令和8年分）01-07.pdf
+// Input: afterSi = 社会保険料等控除後の給与等の金額, dependents = 扶養親族等の数
+function calculateKouTable(afterSi, dependents) {
+  if (afterSi < 88000) return 0
 
-  // Step 1: 給与所得控除 (salary income deduction)
-  let salaryDeduction = 0
-  for (const bracket of MONTHLY_SALARY_DEDUCTION) {
-    if (afterSi <= bracket.upper) {
-      salaryDeduction = bracket.calc(afterSi)
-      break
+  // 扶養人数は0~7の範囲（表の列数）
+  const depIndex = Math.min(Math.max(0, dependents), 7)
+
+  // 740,000円超～790,000円未満: 740K基準額 + 超過分×20.42%
+  if (afterSi >= 740000) {
+    const base = KOU_740K_BASE[depIndex]
+    const excess = afterSi - 740000
+    return Math.floor(base + excess * 0.2042)
+  }
+
+  // 月額表から該当区間を検索
+  for (const row of KOU_MONTHLY_TABLE) {
+    if (afterSi >= row[0] && afterSi < row[1]) {
+      return row[2][depIndex] || 0
     }
   }
 
-  // Step 2: 給与所得 = 社保控除後 - 給与所得控除
-  const employmentIncome = Math.max(0, afterSi - salaryDeduction)
-
-  // Step 3: 基礎控除 (basic deduction, phases out at very high income)
-  // 公式仕様: afterSi（社保控除後の金額）でルックアップ（employmentIncomeではない）
-  let basicDeduction = 0
-  for (const bracket of MONTHLY_BASIC_DEDUCTION) {
-    if (afterSi <= bracket.upper) {
-      basicDeduction = bracket.amount
-      break
-    }
-  }
-
-  // Step 4: 課税所得 = 給与所得 - 基礎控除 - 扶養控除(31,667円/人)
-  const dependentDeduction = dependents * 31667
-  const taxableIncome = Math.max(0, employmentIncome - basicDeduction - dependentDeduction)
-
-  if (taxableIncome <= 0) return 0
-
-  // Step 5: Apply progressive tax rates (rates include 復興特別所得税 2.1%)
-  let tax = 0
-  for (const bracket of MONTHLY_TAX_BRACKETS) {
-    if (taxableIncome <= bracket.upper) {
-      tax = Math.floor(taxableIncome * bracket.rate - bracket.deduction)
-      break
-    }
-  }
-
-  // Step 6: Round to nearest 10 yen (10円未満四捨五入)
-  return Math.round(Math.max(0, tax) / 10) * 10
+  return 0
 }
 
 // 50円未満切捨て、50円以上100円未満は100円に切上げ (乙欄の50円丸め)
@@ -298,7 +276,7 @@ export function calculateWithholdingTax(settings) {
   }
 
   // 甲欄 電算機特例 (default)
-  return calculateElectronic(Math.max(0, afterSi), dependents)
+  return calculateKouTable(Math.max(0, afterSi), dependents)
 }
 
 // Calculate monthly resident tax (住民税)
