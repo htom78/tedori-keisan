@@ -156,9 +156,10 @@ function calculateElectronic(afterSi, dependents) {
   const employmentIncome = Math.max(0, afterSi - salaryDeduction)
 
   // Step 3: 基礎控除 (basic deduction, phases out at very high income)
+  // 公式仕様: afterSi（社保控除後の金額）でルックアップ（employmentIncomeではない）
   let basicDeduction = 0
   for (const bracket of MONTHLY_BASIC_DEDUCTION) {
-    if (employmentIncome <= bracket.upper) {
+    if (afterSi <= bracket.upper) {
       basicDeduction = bracket.amount
       break
     }
@@ -311,7 +312,7 @@ export function calculateResidentTax(settings) {
   // Auto: approximate annual income tax base, then 10%
   const annualSI = socialInsuranceMonthly * 12
   const salaryDeduction = calculateSalaryDeduction(annualSalary)
-  const basicDeduction = 480000
+  const basicDeduction = 580000
   const taxableIncome = Math.max(0, annualSalary - salaryDeduction - annualSI - basicDeduction)
   const annualResidentTax = Math.round(taxableIncome * (RESIDENT_TAX_RATE / 100)) + 5000
   return Math.round(annualResidentTax / 12)

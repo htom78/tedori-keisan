@@ -305,13 +305,13 @@ describe('calculateWithholdingTax', () => {
         taxColumn: 'kou',
       })
       // afterSi = 256035
-      // salaryDeduction: floor(256035 * 0.3) + 6667 = 76810 + 6667 = 83477
-      // employmentIncome = 256035 - 83477 = 172558
-      // basicDeduction = 40000 (< 2162499)
-      // taxable = 172558 - 40000 = 132558
-      // tax = floor(132558 * 0.05105 - 0) = floor(6767.08) = 6767
-      // rounded = round(6767 / 10) * 10 = 6770
-      expect(result).toBe(6770)
+      // salaryDeduction: ceil(256035 * 0.3 + 6667) = ceil(83477.5) = 83478
+      // employmentIncome = 256035 - 83478 = 172557
+      // basicDeduction = 48334 (afterSi ≤ 2120833)
+      // taxable = 172557 - 48334 = 124223
+      // tax = floor(124223 * 0.05105) = floor(6341.58) = 6341
+      // rounded = round(6341 / 10) * 10 = 6340
+      expect(result).toBe(6340)
     })
 
     it('calculates correctly for ¥500,000 salary, ¥70,000 SI, 2 dependents', () => {
@@ -322,15 +322,15 @@ describe('calculateWithholdingTax', () => {
         taxColumn: 'kou',
       })
       // afterSi = 430000
-      // salaryDeduction: floor(430000 * 0.2) + 36667 = 86000 + 36667 = 122667
+      // salaryDeduction: ceil(430000 * 0.2 + 36667) = ceil(122667) = 122667
       // employmentIncome = 430000 - 122667 = 307333
-      // basicDeduction = 40000
+      // basicDeduction = 48334 (afterSi ≤ 2120833)
       // dependentDeduction = 2 * 31667 = 63334
-      // taxable = 307333 - 40000 - 63334 = 203999
-      // bracket: 203999 <= 275000, rate 0.10210, deduction 8296
-      // tax = floor(203999 * 0.10210 - 8296) = floor(20828.5 - 8296) = floor(12532.5) = 12532
-      // rounded = round(12532 / 10) * 10 = 12530
-      expect(result).toBe(12530)
+      // taxable = 307333 - 48334 - 63334 = 195665
+      // bracket: 195665 <= 275000, rate 0.10210, deduction 8296
+      // tax = floor(195665 * 0.10210 - 8296) = floor(19977.41 - 8296) = floor(11681.41) = 11681
+      // rounded = round(11681 / 10) * 10 = 11680
+      expect(result).toBe(11680)
     })
 
     it('returns rounded to nearest 10 yen', () => {
@@ -701,8 +701,8 @@ describe('calculateTakeHome', () => {
       // Total SI: 14865 + 27450 + 0 + 1650 = 43965
       expect(result.socialInsuranceTotal).toBe(43965)
 
-      // Withholding: 電算機特例 = 6770 (verified in withholding test)
-      expect(result.withholdingTax).toBe(6770)
+      // Withholding: 電算機特例 = 6340 (verified in withholding test)
+      expect(result.withholdingTax).toBe(6340)
     })
   })
 })

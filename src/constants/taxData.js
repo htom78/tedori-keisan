@@ -179,19 +179,21 @@ export const EMPLOYMENT_CATEGORIES = [
 ]
 
 // 月額給与所得控除表 (電算機特例 - Monthly Salary Income Deduction)
-// Input: 社会保険料等控除後の給与等の金額
+// Source: 国税庁 denshi_01.pdf 第1表（令和8年分以降）
+// 注: 1円未満切上げ → Math.ceil
 export const MONTHLY_SALARY_DEDUCTION = [
-  { upper: 135416, calc: () => 45834 },
-  { upper: 149999, calc: (s) => Math.floor(s * 0.4) - 8333 },
-  { upper: 299999, calc: (s) => Math.floor(s * 0.3) + 6667 },
-  { upper: 549999, calc: (s) => Math.floor(s * 0.2) + 36667 },
-  { upper: 708330, calc: (s) => Math.floor(s * 0.1) + 91667 },
+  { upper: 158333, calc: () => 54167 },
+  { upper: 299999, calc: (s) => Math.ceil(s * 0.3 + 6667) },
+  { upper: 549999, calc: (s) => Math.ceil(s * 0.2 + 36667) },
+  { upper: 708330, calc: (s) => Math.ceil(s * 0.1 + 91667) },
   { upper: Infinity, calc: () => 162500 },
 ]
 
 // 月額基礎控除 (電算機特例 - Monthly Basic Deduction)
-// Input: 給与所得 (salary after MONTHLY_SALARY_DEDUCTION)
+// Source: 国税庁 denshi_01.pdf 第3表（令和8年分以降）
+// Input: afterSi = 社会保険料等控除後の給与等の金額(A)
 export const MONTHLY_BASIC_DEDUCTION = [
+  { upper: 2120833, amount: 48334 },
   { upper: 2162499, amount: 40000 },
   { upper: 2204166, amount: 26667 },
   { upper: 2245833, amount: 13334 },
@@ -320,9 +322,9 @@ export const DEFAULT_PREFECTURE_INDEX = 12
 export const RESIDENT_TAX_RATE = 10 // %
 
 // Salary employment income deduction table (annual - for resident tax)
+// Source: 令和8年分以降 給与所得控除
 export const SALARY_DEDUCTION_TABLE = [
-  { upper: 1625000, calc: () => 550000 },
-  { upper: 1800000, calc: (s) => Math.floor(s * 0.4) - 100000 },
+  { upper: 1900000, calc: () => 650000 },
   { upper: 3600000, calc: (s) => Math.floor(s * 0.3) + 80000 },
   { upper: 6600000, calc: (s) => Math.floor(s * 0.2) + 440000 },
   { upper: 8500000, calc: (s) => Math.floor(s * 0.1) + 1100000 },

@@ -34,6 +34,24 @@ Push to `main` → GitHub Actions (`.github/workflows/deploy.yml`) 自动执行 
 - `npm test` — 运行测试 (`vitest run`)
 - `npm run test:watch` — 测试 watch 模式
 
+## 令和8年税制改正対応（2026年3月完了）
+
+### 修正内容
+
+103万円の壁 → 123万円の引き上げに伴う甲欄電算機特例の更新：
+
+1. **MONTHLY_SALARY_DEDUCTION（月額給与所得控除）**: 第1段階 135,416→158,333 / 45,834→54,167、40%段階廃止、丸め Math.floor→Math.ceil（1円未満切上げ）
+2. **MONTHLY_BASIC_DEDUCTION（月額基礎控除）**: 4段階→5段階（¥48,334 新設）、ルックアップ入力を employmentIncome→afterSi に修正
+3. **SALARY_DEDUCTION_TABLE（住民税用給与所得控除）**: 1,625,000/550,000→1,900,000/650,000、40%段階廃止
+4. **住民税 basicDeduction**: 480,000→580,000
+
+公式仕様: 国税庁 denshi_01.pdf（令和8年分以降 甲欄電算機計算の特例）で全値を検証済み。
+
+### 注意事項
+
+- 社長・役員は雇用保険に加入できない。UI の「雇用保険に加入」チェックボックスを外して対応する
+- 税理士の手計算と電算機特例の結果は社保率の差異により数十円〜数百円の差が出るのは正常
+
 ## Tech Stack
 
 - React 18 + Vite 6
