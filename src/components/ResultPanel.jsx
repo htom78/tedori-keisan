@@ -161,7 +161,7 @@ const styles = {
   },
 }
 
-export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
+export default function ResultPanel({ result, isDesktop, residentTaxDeducted }) {
   const [expanded, setExpanded] = useState(false)
 
   if (!result) {
@@ -245,7 +245,7 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
           </span>
         </div>
       )}
-      {residentTaxHidden && (
+      {!residentTaxDeducted && (
         <div style={styles.summaryRow}>
           <span style={styles.summaryLabel}>住民税</span>
           <span style={{
@@ -256,7 +256,7 @@ export default function ResultPanel({ result, isDesktop, residentTaxHidden }) {
             background: 'rgba(255,255,255,0.05)',
             borderRadius: 6,
           }}>
-            除外中
+            普通徴収（個人で納付）
           </span>
         </div>
       )}

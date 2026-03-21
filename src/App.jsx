@@ -133,7 +133,7 @@ export default function App() {
   // Resident tax
   const [residentTaxMode, setResidentTaxMode] = useState('auto')
   const [residentTaxCustomAnnual, setResidentTaxCustomAnnual] = useState(0)
-  const [residentTaxHidden, setResidentTaxHidden] = useState(false)
+  const [residentTaxDeducted, setResidentTaxDeducted] = useState(true)
 
   // Lists
   const allowanceManager = useListManager([])
@@ -190,7 +190,7 @@ export default function App() {
       taxColumn,
       residentTaxMode,
       residentTaxCustomAnnual,
-      residentTaxHidden,
+      residentTaxDeducted,
       siCollectionTiming,
       allowances: allowanceManager.items,
       bonusMonths: bonusManager.items,
@@ -221,7 +221,7 @@ export default function App() {
     taxColumn,
     residentTaxMode,
     residentTaxCustomAnnual,
-    residentTaxHidden,
+    residentTaxDeducted,
     siCollectionTiming,
     allowanceManager.items,
     bonusManager.items,
@@ -302,8 +302,8 @@ export default function App() {
             onResidentTaxModeChange={setResidentTaxMode}
             residentTaxCustomAnnual={residentTaxCustomAnnual}
             onResidentTaxCustomAnnualChange={setResidentTaxCustomAnnual}
-            residentTaxHidden={residentTaxHidden}
-            onResidentTaxHiddenChange={setResidentTaxHidden}
+            residentTaxDeducted={residentTaxDeducted}
+            onResidentTaxDeductedChange={setResidentTaxDeducted}
           />
 
           <AllowanceBonusSection
@@ -323,7 +323,7 @@ export default function App() {
         </div>
 
         <div style={styles.rightCol}>
-          <ResultPanel result={result} isDesktop={isDesktop} residentTaxHidden={residentTaxHidden} />
+          <ResultPanel result={result} isDesktop={isDesktop} residentTaxDeducted={residentTaxDeducted} />
         </div>
       </div>
 

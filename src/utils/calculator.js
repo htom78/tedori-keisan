@@ -329,7 +329,7 @@ export function calculateTakeHome(settings) {
     // Resident tax
     residentTaxMode,
     residentTaxCustomAnnual,
-    residentTaxHidden,
+    residentTaxDeducted,
     // SI collection timing (for future rate-period support)
     siCollectionTiming = 'tougetsu',
     // Allowances, bonuses, deductions
@@ -429,14 +429,14 @@ export function calculateTakeHome(settings) {
 
   // Resident tax
   const annualSalary = (salary + totalAllowances) * 12
-  const residentTax = residentTaxHidden
-    ? 0
-    : calculateResidentTax({
+  const residentTax = residentTaxDeducted
+    ? calculateResidentTax({
         mode: residentTaxMode,
         annualSalary,
         customAnnualAmount: residentTaxCustomAnnual,
         socialInsuranceMonthly: healthInsurance + pensionInsurance + nursingInsurance,
       })
+    : 0
 
   // Total deductions (other deductions from paycheck)
   const totalOtherDeductions = deductions.reduce((sum, d) => sum + (d.amount || 0), 0)

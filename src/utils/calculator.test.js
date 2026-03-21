@@ -33,7 +33,7 @@ const defaultSettings = {
   taxColumn: 'kou',
   residentTaxMode: 'auto',
   residentTaxCustomAnnual: 0,
-  residentTaxHidden: false,
+  residentTaxDeducted: true,
   allowances: [],
   bonusMonths: [],
   deductions: [],
@@ -635,12 +635,20 @@ describe('calculateTakeHome', () => {
     expect(result.nursingInsurance).toBe(0)
   })
 
-  it('hidden resident tax returns 0', () => {
+  it('non-deducted resident tax returns 0 (普通徴収)', () => {
     const result = calculateTakeHome({
       ...defaultSettings,
-      residentTaxHidden: true,
+      residentTaxDeducted: false,
     })
     expect(result.residentTax).toBe(0)
+  })
+
+  it('deducted resident tax is calculated (特別徴収)', () => {
+    const result = calculateTakeHome({
+      ...defaultSettings,
+      residentTaxDeducted: true,
+    })
+    expect(result.residentTax).toBeGreaterThan(0)
   })
 
   it('passes healthUnionRate and nursingUnionRate through', () => {

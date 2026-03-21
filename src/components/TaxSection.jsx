@@ -1,4 +1,4 @@
-import { Minus, Plus, Eye, EyeOff, ShieldCheck, Check } from 'lucide-react'
+import { Minus, Plus, ShieldCheck, Check } from 'lucide-react'
 import { formatNumber, parseNumericInput } from '../utils/format'
 
 const colors = {
@@ -47,12 +47,6 @@ const styles = {
     alignItems: 'center',
     gap: 8,
   }),
-  subTitleRow: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-  },
   label: {
     fontSize: 14,
     fontWeight: 600,
@@ -166,27 +160,27 @@ const styles = {
     transform: active ? 'scale(1)' : 'scale(0.98)',
     boxShadow: active ? `0 6px 16px rgba(${hexToRgb(color)},0.3)` : 'none',
   }),
-  visibilityBtn: {
-    background: 'none',
-    border: 'none',
-    color: 'rgba(255,255,255,0.4)',
-    cursor: 'pointer',
-    padding: 4,
+  checkbox: {
     display: 'flex',
     alignItems: 'center',
+    gap: 10,
+    fontSize: 14,
+    fontWeight: 500,
+    color: 'rgba(255,255,255,0.7)',
+    cursor: 'pointer',
+    marginBottom: 12,
+  },
+  checkboxInput: {
+    width: 18,
+    height: 18,
+    accentColor: '#f97316',
+    cursor: 'pointer',
   },
   info: {
     fontSize: 13,
     color: 'rgba(255,255,255,0.4)',
     marginTop: 10,
     lineHeight: 1.6,
-  },
-  hiddenNote: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.4)',
-    textAlign: 'center',
-    padding: '16px 0',
-    fontStyle: 'italic',
   },
 }
 
@@ -284,8 +278,8 @@ function ResidentCard({
   onModeChange,
   customAnnual,
   onCustomAnnualChange,
-  hidden,
-  onHiddenChange,
+  deducted,
+  onDeductedChange,
 }) {
   const handleAmountChange = (e) => {
     const raw = e.target.value.replace(/[^0-9]/g, '')
@@ -302,24 +296,21 @@ function ResidentCard({
 
   return (
     <div style={styles.subCard(colors.resident)}>
-      <div style={styles.subTitleRow}>
-        <div style={styles.subTitle(colors.resident)}>
-          <span>&#127969;</span> 住民税
-        </div>
-        <button
-          style={styles.visibilityBtn}
-          onClick={() => onHiddenChange(!hidden)}
-          title={hidden ? '住民税を表示' : '住民税を非表示'}
-        >
-          {hidden ? <EyeOff size={18} /> : <Eye size={18} />}
-        </button>
+      <div style={styles.subTitle(colors.resident)}>
+        <span>&#127969;</span> 住民税
       </div>
 
-      {hidden ? (
-        <div style={styles.hiddenNote}>
-          住民税は計算から除外されています
-        </div>
-      ) : (
+      <label style={styles.checkbox}>
+        <input
+          type="checkbox"
+          style={styles.checkboxInput}
+          checked={deducted}
+          onChange={(e) => onDeductedChange(e.target.checked)}
+        />
+        給与から天引き（特別徴収）
+      </label>
+
+      {deducted && (
         <>
           <div style={styles.tabs}>
             <button
@@ -378,8 +369,8 @@ export default function TaxSection({
   onResidentTaxModeChange,
   residentTaxCustomAnnual,
   onResidentTaxCustomAnnualChange,
-  residentTaxHidden,
-  onResidentTaxHiddenChange,
+  residentTaxDeducted,
+  onResidentTaxDeductedChange,
 }) {
   return (
     <div style={styles.card}>
@@ -404,8 +395,8 @@ export default function TaxSection({
         onModeChange={onResidentTaxModeChange}
         customAnnual={residentTaxCustomAnnual}
         onCustomAnnualChange={onResidentTaxCustomAnnualChange}
-        hidden={residentTaxHidden}
-        onHiddenChange={onResidentTaxHiddenChange}
+        deducted={residentTaxDeducted}
+        onDeductedChange={onResidentTaxDeductedChange}
       />
     </div>
   )
